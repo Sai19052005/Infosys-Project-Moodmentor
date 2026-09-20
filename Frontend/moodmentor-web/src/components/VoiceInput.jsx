@@ -222,7 +222,7 @@ export default function VoiceInput({
               <>
                 <p>
                   Your browser’s speech service may process microphone audio
-                  online. MoodMentor receives the transcript, and saves it only
+                  online. Emotion Care receives the transcript, and saves it only
                   when you press Send.
                 </p>
                 <label>
@@ -256,7 +256,7 @@ export default function VoiceInput({
               <>
                 <p>
                   Speech recognition is not available in this browser. Open
-                  MoodMentor in a browser that supports speech recognition, or
+                  Emotion Care in a browser that supports speech recognition, or
                   continue typing here.
                 </p>
                 <Button onClick={() => setDialog(false)}>Keep typing</Button>

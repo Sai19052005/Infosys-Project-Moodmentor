@@ -18,6 +18,7 @@ export function PreferencesForm({ initial, onSaved, onboarding = false }) {
       interests: initial?.interests || [],
       available_time_description: initial?.available_time_description || '',
       city: initial?.city || '',
+      music_preference: initial?.music_preference || 'bollywood',
     })),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
@@ -117,6 +118,38 @@ export function PreferencesForm({ initial, onSaved, onboarding = false }) {
               onClick={() => toggle('interests', v)}
             >
               {v}
+            </button>
+          ))}
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Favorite Music & Songs for Spotify 🎧</legend>
+        <p style={{ margin: '0 0 10px', fontSize: '0.86rem', color: 'var(--text-muted, #71717a)' }}>
+          Select your preferred songs & music style. Emotion Care will tailor Spotify track and playlist suggestions in check-in recommendations and chat to this preference:
+        </p>
+        <div className="preference-options">
+          {[
+            { id: 'bollywood', label: 'Bollywood 🎬' },
+            { id: 'hollywood', label: 'Hollywood / English Pop 🎧' },
+            { id: 'hindi', label: 'Hindi Songs 🎶' },
+            { id: 'marathi', label: 'Marathi (मराठी) 🪕' },
+            { id: 'south_indian', label: 'South Indian 🌴' },
+            { id: 'punjabi', label: 'Punjabi ✨' },
+            { id: 'malayalam', label: 'Malayali Songs (മലയാളം) 🌿' },
+            { id: 'rap', label: 'Rap & Hip-Hop 🎤' },
+            { id: 'latest_2026', label: 'Latest 2026 Songs 🔥' },
+            { id: 'famous', label: 'All-Time Famous Hits ⭐' },
+            { id: 'lo-fi', label: 'Lo-Fi & Chill ☕' },
+            { id: 'classical', label: 'Classical / Meditative 🧘' },
+          ].map((m) => (
+            <button
+              type="button"
+              key={m.id}
+              className={form.music_preference === m.id ? 'selected' : ''}
+              aria-pressed={form.music_preference === m.id}
+              onClick={() => update('music_preference', m.id)}
+            >
+              {m.label}
             </button>
           ))}
         </div>
@@ -242,7 +275,7 @@ export function PreferencesForm({ initial, onSaved, onboarding = false }) {
           onChange={(e) => update('reminders_enabled', e.target.checked)}
         />
         <span>
-          <b>Gentle reminders inside MoodMentor</b>
+          <b>Gentle reminders inside Emotion Care</b>
           <small>
             Optional check-in and unfinished-session reminders. No push
             messages, email, or SMS.
@@ -311,11 +344,13 @@ export default function Profile({
           ...values,
           role,
           email: values.email || null,
-          notification_mode: 'ask',
+          notification_mode: values.notification_mode || 'ask',
         },
       })
       setNotice(
-        'Contact saved. Automatic delivery is unavailable; call your contact directly.',
+        values.notification_mode === 'automatic'
+          ? 'Contact saved. Automatic Fast2SMS emergency alert is enabled if severe distress is detected.'
+          : 'Contact saved. You can reach out directly via Call, WhatsApp, or SMS.',
       )
       contacts.reload()
     } catch (e) {
@@ -469,7 +504,7 @@ export default function Profile({
           <article className="mm-card">
             <h2>People you trust</h2>
             <p>
-              Save contacts you can reach quickly if you need support. MoodMentor
+              Save contacts you can reach quickly if you need support. Emotion Care
               will never contact them automatically.
             </p>
             {[
@@ -531,15 +566,28 @@ export default function Profile({
                         />
                       </label>
                     </div>
-                    <label>
-                      Email (optional)
-                      <input
-                        type="email"
-                        name="email"
-                        defaultValue={item?.email || ''}
-                        placeholder="Email address"
-                      />
-                    </label>
+                    <div className="form-grid">
+                      <label>
+                        Email (optional)
+                        <input
+                          type="email"
+                          name="email"
+                          defaultValue={item?.email || ''}
+                          placeholder="Email address"
+                        />
+                      </label>
+                      <label>
+                        Emergency Alert Mode
+                        <select
+                          name="notification_mode"
+                          defaultValue={item?.notification_mode || 'ask'}
+                        >
+                          <option value="ask">Ask me first (Call / WhatsApp / SMS)</option>
+                          <option value="automatic">Automatic SMS (Fast2SMS Alert)</option>
+                          <option value="never">Never notify (View-only contact)</option>
+                        </select>
+                      </label>
+                    </div>
                     <div className="button-row" style={{ marginTop: '8px' }}>
                       <Button disabled={busy}>
                         {item ? 'Update' : 'Save'} {slot.title}

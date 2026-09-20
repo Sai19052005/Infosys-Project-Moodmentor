@@ -143,7 +143,7 @@ export default function Library({
           </Button>
         </div>
         <WellnessPhoto
-          scene={meditation ? 'calm' : 'connect'}
+          scene={meditation ? 'meditation' : 'connect'}
           className="library-hero-photo"
         />
       </section>
@@ -194,7 +194,7 @@ export default function Library({
       <div className="library-filters">
         <div className="filter-chips">
           {(meditation
-            ? ['All', 'Calm', 'Focus', 'Sleep', 'Relaxation']
+            ? ['All', 'Deep Calm', 'Energy & Healing', 'Focus', 'Calm']
             : [
                 'All',
                 'Mind',
@@ -221,9 +221,9 @@ export default function Library({
           onChange={(e) => setDuration(e.target.value)}
         >
           <option>All</option>
-          {[2, 3, 5, 10, 15, 20].map((n) => (
+          {[2, 3, 5, 10, 27].map((n) => (
             <option key={n} value={n}>
-              {n} minutes
+              {n === 27 ? '27 min (Daily Refresh)' : `${n} minutes`}
             </option>
           ))}
         </select>
@@ -238,7 +238,17 @@ export default function Library({
           {items.map((a) => (
             <article className="library-card" key={a.id}>
               <div className="library-art">
-                <ActivityArtwork type={a.type} />
+                <ActivityArtwork
+                  type={a.type}
+                  artworkUrl={
+                    a.artwork_url ||
+                    (a.id === 'meditation-ravi-shankar-10'
+                      ? '/images/meditation-ravi-shankar.png'
+                      : a.id === 'meditation-choa-kok-sui-27'
+                      ? '/images/meditation-master.png'
+                      : null)
+                  }
+                />
                 <button
                   className="favorite-button"
                   disabled={saving}
@@ -280,9 +290,17 @@ export default function Library({
           <SectionTitle title="A change of scenery, a different sound" />
           <p>
             These links open external services only when you choose. No account
-            connection or location sharing is required by MoodMentor.
+            connection or location sharing is required by Emotion Care.
           </p>
           <div className="button-row">
+            <a
+              className="btn btn-secondary"
+              href="https://photos.google.com/search/family"
+              target="_blank"
+              rel="noreferrer"
+            >
+              📸 Cherished Memories (Google Photos) ↗
+            </a>
             <a
               className="btn btn-secondary"
               href="https://www.google.com/maps/search/parks+near+me/"
@@ -293,19 +311,19 @@ export default function Library({
             </a>
             <a
               className="btn btn-secondary"
-              href="https://open.spotify.com/search/calm%20instrumental"
+              href="https://open.spotify.com/search/bollywood%20hindi%20marathi%20top%20hits"
               target="_blank"
               rel="noreferrer"
             >
-              Find music on Spotify ↗
+              🎵 Top Hits on Spotify ↗
             </a>
             <a
               className="btn btn-secondary"
-              href="https://www.youtube.com/results?search_query=calm+instrumental+music"
+              href="https://www.youtube.com/results?search_query=latest+trending+songs+hits"
               target="_blank"
               rel="noreferrer"
             >
-              Find music on YouTube ↗
+              ▶ Trending on YouTube ↗
             </a>
             <Button variant="secondary" onClick={() => navigate('studio')}>
               Open Mood Studio

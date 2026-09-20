@@ -1,0 +1,288 @@
+.ec-application {
+  display: contents;
+}
+.ec-intro-announcement {
+  position: absolute;
+}
+.ec-logo-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  background: #fdfaf6;
+  color: #245b51;
+  opacity: 1;
+  transition: opacity var(--ec-intro-exit, 180ms) ease-out;
+  overscroll-behavior: contain;
+}
+.ec-logo-intro::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 48% 43%, #fffdf9 0%, #fffdf900 62%),
+    radial-gradient(ellipse at 85% 90%, #f5e5d640, #f5e5d600 50%);
+}
+.ec-logo-intro.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+.ec-intro-art {
+  width: min(460px, 88vw, 76svh);
+  aspect-ratio: 1;
+  opacity: 0;
+  transform: scale(0.94);
+}
+.ec-logo-intro.is-ready .ec-intro-art {
+  animation: ec-intro-arrive var(--ec-intro-duration)
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ec-intro-logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  mask-image:
+    linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
+    linear-gradient(to bottom, transparent, #000 7%, #000 92%, transparent);
+  mask-composite: intersect;
+}
+.ec-logo-piece {
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+.ec-logo-paper {
+  opacity: 0;
+}
+.ec-logo-intro.is-ready .ec-logo-paper {
+  animation: ec-reveal-paper var(--ec-intro-duration) ease-out both;
+}
+.ec-logo-intro.is-ready .ec-logo-piece {
+  animation-duration: var(--ec-intro-duration);
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+}
+.ec-logo-piece--embrace {
+  animation-name: ec-reveal-embrace;
+}
+.ec-logo-piece--heart {
+  animation-name: ec-reveal-heart;
+  transform-origin: 55% 41%;
+}
+.ec-logo-piece--leaves {
+  animation-name: ec-reveal-leaves;
+  transform-origin: 59% 57%;
+}
+.ec-logo-piece--wordmark {
+  animation-name: ec-reveal-wordmark;
+}
+.ec-logo-piece--signature {
+  animation-name: ec-reveal-signature;
+}
+.ec-heart-breath {
+  opacity: 0;
+  transform-origin: 55% 41%;
+}
+.ec-logo-intro.is-ready .ec-heart-breath {
+  animation: ec-care-breath var(--ec-intro-duration) ease-in-out both;
+}
+.ec-intro-skip {
+  position: absolute;
+  right: max(28px, env(safe-area-inset-right));
+  bottom: max(24px, env(safe-area-inset-bottom));
+  min-height: 44px;
+  min-width: 100px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  border: 1px solid #dedfd5;
+  border-radius: 100px;
+  background: #fffdf7;
+  color: #355e54;
+  padding: 10px 17px;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.ec-intro-skip:hover {
+  background: #edf3e9;
+  border-color: #b3c8bc;
+}
+.ec-intro-skip:focus-visible {
+  outline: 3px solid #397d70;
+  outline-offset: 4px;
+}
+.ec-intro-fallback {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.ec-intro-fallback > span {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 500;
+  font-size: clamp(30px, 7vw, 52px);
+  letter-spacing: -0.055em;
+}
+.ec-intro-fallback em {
+  color: #b45e4a;
+  font: inherit;
+}
+.ec-intro-fallback p {
+  margin-top: 20px;
+  color: #47685e;
+  font-size: 11px;
+  letter-spacing: 0.13em;
+}
+.ec-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.ec-logo-intro--returning.is-ready .ec-intro-art {
+  animation: ec-return-arrive 400ms ease-out both;
+}
+.ec-logo-intro--returning.is-ready .ec-logo-piece {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+.ec-logo-intro--returning.is-ready .ec-logo-paper {
+  animation: none;
+  opacity: 1;
+}
+@keyframes ec-reveal-paper {
+  0%,
+  43% {
+    opacity: 0;
+  }
+  72%,
+  100% {
+    opacity: 1;
+  }
+}
+.ec-logo-intro--returning.is-ready .ec-heart-breath {
+  animation: ec-care-breath var(--ec-intro-duration) ease-in-out both;
+}
+@keyframes ec-intro-arrive {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  18% {
+    opacity: 1;
+  }
+  65%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes ec-reveal-embrace {
+  0% {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  27%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes ec-reveal-heart {
+  0%,
+  13% {
+    opacity: 0;
+    transform: scale(0.965);
+  }
+  40%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes ec-reveal-leaves {
+  0%,
+  27% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.99);
+  }
+  53%,
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes ec-reveal-wordmark {
+  0%,
+  43% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  65%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes ec-reveal-signature {
+  0%,
+  53% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  72%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes ec-care-breath {
+  0%,
+  39%,
+  86%,
+  100% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  62% {
+    opacity: 0.13;
+    transform: scale(1.015);
+  }
+}
+@keyframes ec-return-arrive {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@media (max-width: 600px) {
+  .ec-intro-skip {
+    right: max(20px, env(safe-area-inset-right));
+    bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ec-logo-intro {
+    display: none;
+    transition: none;
+  }
+  .ec-logo-intro *,
+  .ec-logo-intro *::before {
+    animation: none !important;
+    transform: none !important;
+  }
+}

@@ -10,6 +10,7 @@ import {
   Loading,
 } from '../components/ui'
 import { ActivityArtwork, WellnessPhoto } from '../components/WellnessVisual'
+import CuteEmotionVisual from '../components/CuteEmotionVisual'
 import PlanCard from '../components/PlanCard'
 import VoiceInput from '../components/VoiceInput'
 import { SPEECH_LANGUAGES, textLanguage, useNarrator } from '../lib/speech'
@@ -37,6 +38,85 @@ const PROMPTS = [
 ]
 function timestamp(value) {
   return Date.parse(/[zZ]|[+-]\d\d:\d\d$/.test(value) ? value : value + 'Z')
+}
+
+function renderFormattedText(textChunk, keyPrefix) {
+  if (typeof textChunk !== 'string') return textChunk
+  const boldRegex = /\*\*([^*]+)\*\*/g
+  const subParts = []
+  let lastIdx = 0
+  let bMatch
+  while ((bMatch = boldRegex.exec(textChunk)) !== null) {
+    if (bMatch.index > lastIdx) {
+      subParts.push(textChunk.slice(lastIdx, bMatch.index))
+    }
+    subParts.push(
+      <strong key={`${keyPrefix}-b-${bMatch.index}`} className="song-mention-highlight">
+        {bMatch[1]}
+      </strong>
+    )
+    lastIdx = boldRegex.lastIndex
+  }
+  if (lastIdx < textChunk.length) {
+    subParts.push(textChunk.slice(lastIdx))
+  }
+  return subParts.length > 0 ? subParts : textChunk
+}
+
+export function renderMessageText(text) {
+  if (!text) return null
+  // In chat: DO NOT render direct links to Spotify. Only mention song names in bold.
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g
+  const parts = []
+  let lastIndex = 0
+  let match
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index))
+    }
+    const label = match[1]
+    const url = match[2]
+    const isSpotify = url.includes('spotify.com')
+
+    if (isSpotify) {
+      // Mention song name in bold without link in chat
+      parts.push(
+        <strong key={match.index} className="song-mention-highlight">
+          {label}
+        </strong>
+      )
+    } else {
+      parts.push(
+        <a
+          key={match.index}
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="chat-text-link"
+        >
+          {label}
+        </a>
+      )
+    }
+    lastIndex = regex.lastIndex
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex))
+  }
+
+  return (
+    <div className="message-rendered-text">
+      {parts.map((part, idx) =>
+        typeof part === 'string' ? (
+          <span key={idx} style={{ whiteSpace: 'pre-line' }}>{renderFormattedText(part, idx)}</span>
+        ) : (
+          part
+        )
+      )}
+    </div>
+  )
 }
 
 export default function Companion({
@@ -86,7 +166,8 @@ export default function Companion({
       return
     }
     setReadingKey(key)
-    narrator.speak(message, textLanguage(message, voiceLanguage))
+    const cleanText = (message || '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    narrator.speak(cleanText, textLanguage(cleanText, voiceLanguage))
   }
   function startActivity(...args) {
     narrator.stop()
@@ -126,7 +207,37 @@ export default function Companion({
       ].sort((a, b) => timestamp(a.created_at) - timestamp(b.created_at)),
     [chat.data, reflections.data],
   )
-  const shownPlan = hasNewPlan ? plan : summary.data?.latest_plan
+  const shownPlan = useMemo(() => {
+    const base = hasNewPlan ? plan : summary.data?.latest_plan
+    if (!base || !base.external_recommendations) return base
+
+    // Check if the latest assistant message mentioned a song
+    const lastBotMsg = [...messages].reverse().find((m) => m.role === 'assistant')?.text || ''
+    if (!lastBotMsg) return base
+
+    let songMatch = null
+    const linkMatch = /\[([^\]]+)\]\((https?:\/\/open\.spotify\.com\/search\/[^)]+)\)/.exec(lastBotMsg)
+    if (linkMatch) {
+      songMatch = { title: linkMatch[1], url: linkMatch[2] }
+    }
+
+    if (songMatch) {
+      const musicCard = {
+        type: 'music',
+        title: songMatch.title,
+        description: 'Mentioned in your conversation · Ready to play on Spotify',
+        url: songMatch.url,
+        icon: 'music',
+      }
+      const others = base.external_recommendations.filter((r) => r.type !== 'music')
+      return {
+        ...base,
+        external_recommendations: [musicCard, ...others],
+      }
+    }
+
+    return base
+  }, [hasNewPlan, plan, summary.data?.latest_plan, messages])
   const signal = [...messages]
     .reverse()
     .find((m) => m.role === 'user' && m.emotion)?.emotion
@@ -364,11 +475,24 @@ export default function Companion({
               >
                 <div className="message-author">
                   {m.role === 'assistant' && (
-                    <span className="companion-sign" aria-hidden="true">
-                      ✳
+                    <span className="companion-avatar-mark" aria-hidden="true">
+                      <img
+                        src={`${import.meta.env.BASE_URL}brand/emotion-care-icon.png`}
+                        alt=""
+                        width="20"
+                        height="20"
+                        style={{
+                          borderRadius: '50%',
+                          verticalAlign: 'middle',
+                          objectFit: 'contain',
+                          background: '#fff',
+                          boxShadow: '0 1px 3px rgba(36, 91, 81, 0.15)',
+                          marginRight: '4px',
+                        }}
+                      />
                     </span>
                   )}
-                  <b>{m.role === 'user' ? 'You' : 'MoodMentor'}</b>
+                  <b>{m.role === 'user' ? 'You' : 'Emotion Care'}</b>
                   {m.reflection && (
                     <span className="reflection-badge">
                       <Icon name="journal" size={12} />
@@ -376,7 +500,36 @@ export default function Companion({
                     </span>
                   )}
                 </div>
-                <p>{m.text}</p>
+                {renderMessageText(m.text)}
+                {m.role === 'assistant' &&
+                  /start reset|recommended practices|guided practice|quiet between tasks|room to breathe|meditation practice/i.test(m.text) && (
+                    <div className="chat-guided-action-banner">
+                      <div className="chat-action-left">
+                        <span className="chat-action-icon" aria-hidden="true">🧘</span>
+                        <div className="chat-action-text">
+                          <strong>{(shownPlan?.activities && shownPlan.activities[0]?.title) || shownPlan?.activity?.title || 'The quiet between tasks'}</strong>
+                          <span>Interactive audio session with voice narration & breath timer</span>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        className="chat-action-start-btn"
+                        onClick={() => {
+                          const act = (shownPlan?.activities && shownPlan.activities[0]) || shownPlan?.activity
+                          if (act) {
+                            startActivity(act, shownPlan?.id)
+                          } else {
+                            setPanelOpen(true)
+                            const el = document.querySelector('.mindfulness-practices-section')
+                            if (el) el.scrollIntoView({ behavior: 'smooth' })
+                          }
+                        }}
+                      >
+                        <Icon name="play" size={13} />
+                        <span>Start reset</span>
+                      </button>
+                    </div>
+                  )}
                 {m.role === 'assistant' &&
                   m.sources?.length > 0 && (
                     <details className="rag-sources">
@@ -563,6 +716,10 @@ export default function Companion({
               <Icon name="camera" size={15} />
               Mood Lens
             </button>
+            <button onClick={() => setTool('photos')}>
+              <Icon name="photo" size={15} />
+              Family & Photos
+            </button>
             <button onClick={() => setVoiceOptions(true)}>
               <Icon name="volume" size={15} />
               Voice options
@@ -632,57 +789,194 @@ export default function Companion({
             </article>
           ) : shownPlan ? (
             <div className="canvas-plan">
-              {shownPlan.activities && shownPlan.activities.length > 0 ? (
-                shownPlan.activities.map((act, index) => (
-                  <div key={act.id}>
-                    {index === 0 && <ActivityArtwork type={act.type} />}
+              {/* 1. Detected Emotion Visual */}
+              <CuteEmotionVisual
+                emotion={
+                  signal ||
+                  shownPlan?.activity?.emotion ||
+                  (shownPlan?.activities && shownPlan.activities[0]?.emotion) ||
+                  'calm'
+                }
+              />
+
+              {/* 2. External Recommendations (Soundtracks & Moments) */}
+              {shownPlan.external_recommendations && shownPlan.external_recommendations.length > 0 && (
+                <section className="other-recommendations-section" aria-label="Extra recommendations">
+                  <div className="canvas-section-header">
+                    <div className="canvas-section-title">
+                      <Icon name="spark" size={14} className="sparkle-icon" />
+                      <span>MORE FOR YOUR MOOD</span>
+                    </div>
+                    <small className="canvas-section-caption">Curated soundtracks & moments</small>
+                  </div>
+                  
+                  <div className="external-recs-list">
+                    {shownPlan.external_recommendations.map((rec, i) => {
+                      const isMusic = rec.type === 'music'
+                      const isMovie = rec.type === 'movie'
+                      const isOutdoor = rec.type === 'outdoor'
+                      const isPhotos = rec.type === 'photos'
+                      const isGames = rec.type === 'games'
+                      const isStudio = rec.type === 'studio'
+                      const isMeditation = rec.type === 'meditation'
+                      const isInApp = isGames || isStudio || isMeditation
+                      
+                      return (
+                        <article
+                          className={`external-rec-card rec-type-${rec.type || 'generic'}`}
+                          key={`ext-${i}-${rec.title}`}
+                        >
+                          <div className="rec-card-top">
+                            <div className="rec-badge-group">
+                              <span className={`rec-icon-badge badge-${rec.type}`}>
+                                <Icon name={rec.icon || (isMusic ? 'music' : isMovie ? 'play' : isOutdoor ? 'pin' : isPhotos ? 'photo' : isGames ? 'game' : isStudio ? 'camera' : isMeditation ? 'spa' : 'spark')} size={15} />
+                              </span>
+                              <span className="rec-category-tag">
+                                {isMusic
+                                  ? 'Spotify Soundtrack'
+                                  : isMovie
+                                  ? (rec.language ? (rec.language === 'English' ? 'Hollywood Movie' : `${rec.language} Movie`) : 'Feel-Good Movie')
+                                  : isOutdoor
+                                  ? 'Step Outside'
+                                  : isPhotos
+                                  ? 'Family & Memories'
+                                  : isGames
+                                  ? 'Mindful Games'
+                                  : isStudio
+                                  ? 'Creative Studio'
+                                  : isMeditation
+                                  ? 'Guided Meditation'
+                                  : 'Connect'}
+                              </span>
+                            </div>
+                            <button
+                              className="rec-dismiss-btn"
+                              title="Dismiss recommendation"
+                              aria-label={`Dismiss ${rec.title}`}
+                              onClick={() => {
+                                api('/wellness/dismiss', { method: 'POST', body: { recommendation_id: rec.title } }).catch(console.error);
+                                setPlan(prev => prev ? { ...prev, external_recommendations: prev.external_recommendations.filter(r => r.title !== rec.title) } : prev);
+                                setHasNewPlan(true);
+                              }}
+                            >
+                              <Icon name="close" size={13} />
+                            </button>
+                          </div>
+
+                          <div className="rec-card-body">
+                            <h4 className="rec-title">{rec.title}</h4>
+                            <p className="rec-description">{rec.description}</p>
+                          </div>
+
+                          <div className="rec-card-footer">
+                            {isInApp ? (
+                              <button
+                                className={`rec-action-btn action-${rec.type}`}
+                                onClick={() => setTool(isGames ? 'games' : isStudio ? 'studio' : 'meditation')}
+                              >
+                                {isGames ? (
+                                  <>
+                                    <span className="btn-icon">🎮</span>
+                                    <span>Play Now</span>
+                                  </>
+                                ) : isStudio ? (
+                                  <>
+                                    <span className="btn-icon">🎨</span>
+                                    <span>Open Studio</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="btn-icon">🧘</span>
+                                    <span>Start Session</span>
+                                  </>
+                                )}
+                              </button>
+                            ) : (
+                            <a
+                              href={rec.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`rec-action-btn action-${rec.type}`}
+                            >
+                              {isMusic ? (
+                                <>
+                                  <span className="btn-icon">▶</span>
+                                  <span>Listen on Spotify</span>
+                                  <span className="btn-arrow">↗</span>
+                                </>
+                              ) : isMovie ? (
+                                <>
+                                  <span className="btn-icon">🍿</span>
+                                  <span>Watch / Download Movie</span>
+                                  <span className="btn-arrow">↗</span>
+                                </>
+                              ) : isOutdoor ? (
+                                <>
+                                  <span className="btn-icon">📍</span>
+                                  <span>Explore on Google Maps</span>
+                                  <span className="btn-arrow">↗</span>
+                                </>
+                              ) : isPhotos ? (
+                                <>
+                                  <span className="btn-icon">📸</span>
+                                  <span>Open Google Photos</span>
+                                  <span className="btn-arrow">↗</span>
+                                </>
+                              ) : (
+                                <>
+                                  <span className="btn-icon">💬</span>
+                                  <span>Open Link</span>
+                                  <span className="btn-arrow">↗</span>
+                                </>
+                              )}
+                            </a>
+                            )}
+                          </div>
+                        </article>
+                      )
+                    })}
+                  </div>
+                </section>
+              )}
+
+              {/* 3. Recommended Mindfulness Practices (Placed AFTER 'MORE FOR YOUR MOOD') */}
+              <section className="mindfulness-practices-section" aria-label="Recommended practices">
+                <div className="canvas-section-header">
+                  <div className="canvas-section-title">
+                    <Icon name="spark" size={14} className="sparkle-icon" />
+                    <span>RECOMMENDED PRACTICES</span>
+                  </div>
+                  <small className="canvas-section-caption">Short guided resets to center your day</small>
+                </div>
+                
+                <div className="practices-cards-list">
+                  {shownPlan.activities && shownPlan.activities.length > 0 ? (
+                    shownPlan.activities.slice(0, 2).map((act, index) => (
+                      <PlanCard
+                        key={act.id || index}
+                        index={index}
+                        plan={{...shownPlan, activity: act, rationale: act.why || shownPlan.rationale}}
+                        onPlan={updatePlan}
+                        onStart={startActivity}
+                        onSafety={onSafety}
+                        onDismiss={() => {
+                          api('/wellness/dismiss', { method: 'POST', body: { recommendation_id: act.id } }).catch(console.error);
+                          setPlan(prev => prev ? { ...prev, activities: prev.activities.filter(a => a.id !== act.id) } : prev);
+                          setHasNewPlan(true);
+                        }}
+                      />
+                    ))
+                  ) : (
                     <PlanCard
-                      plan={{...shownPlan, activity: act, rationale: act.why || shownPlan.rationale}}
+                      plan={shownPlan}
+                      index={0}
                       onPlan={updatePlan}
                       onStart={startActivity}
                       onSafety={onSafety}
-                      onDismiss={() => {
-                        api('/wellness/dismiss', { method: 'POST', body: { recommendation_id: act.id } }).catch(console.error);
-                        setPlan(prev => prev ? { ...prev, activities: prev.activities.filter(a => a.id !== act.id) } : prev);
-                        setHasNewPlan(true);
-                      }}
                     />
-                  </div>
-                ))
-              ) : (
-                <>
-                  {shownPlan.activity && (
-                    <ActivityArtwork type={shownPlan.activity.type} />
                   )}
-                  <PlanCard
-                    plan={shownPlan}
-                    onPlan={updatePlan}
-                    onStart={startActivity}
-                    onSafety={onSafety}
-                  />
-                </>
-              )}
-              {shownPlan.external_recommendations?.map((rec, i) => (
-                <article className="external-rec-card" key={`ext-${i}`}>
-                   <div className="external-rec-content">
-                       <Icon name={rec.icon} size={20} />
-                       <div>
-                           <b>{rec.title}</b>
-                           <span>{rec.description}</span>
-                       </div>
-                   </div>
-                   <div style={{display: 'flex', gap: '8px', alignItems: 'center', marginTop: '12px'}}>
-                       <a href={rec.url} target="_blank" rel="noopener noreferrer" style={{fontSize: '13px', fontWeight: 'bold'}}>Open Link</a>
-                       <button className="rec-dismiss" style={{background: 'none', border: 'none', cursor: 'pointer', padding: '4px', marginLeft: 'auto'}} onClick={() => {
-                          api('/wellness/dismiss', { method: 'POST', body: { recommendation_id: rec.title } }).catch(console.error);
-                          setPlan(prev => prev ? { ...prev, external_recommendations: prev.external_recommendations.filter(r => r.title !== rec.title) } : prev);
-                          setHasNewPlan(true);
-                       }}>
-                          <Icon name="close" size={14} />
-                       </button>
-                   </div>
-                </article>
-              ))}
+                </div>
+              </section>
             </div>
           ) : (
             <article className="canvas-invitation">
@@ -721,7 +1015,7 @@ export default function Companion({
               </button>
             </div>
             <button onClick={() => setTool('meditation')}>
-              <WellnessPhoto scene="calm" />
+              <WellnessPhoto scene="meditation" />
               <span>
                 <b>A quieter mind</b>
                 <small>Meditation & breathing</small>

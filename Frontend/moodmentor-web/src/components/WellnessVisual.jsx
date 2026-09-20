@@ -4,6 +4,11 @@ export const WELLNESS_IMAGES = {
   pause: '/images/sunlit-pause.png',
   connect: '/images/walk-together.png',
   calm: '/images/quiet-lake.png',
+  meditation: '/images/meditation-dock.jpg',
+  zen: '/images/meditation-zen.jpg',
+  master: '/images/meditation-master.png',
+  choa_kok_sui: '/images/meditation-master.png',
+  ravi_shankar: '/images/meditation-ravi-shankar.png',
   music: '/images/music-moment.png',
   cafe: '/images/cafe-courtyard.png',
   play: '/images/park-badminton.png',
@@ -11,6 +16,7 @@ export const WELLNESS_IMAGES = {
 
 export function WellnessPhoto({
   scene = 'pause',
+  src = null,
   alt = '',
   className = '',
   eager = false,
@@ -18,7 +24,7 @@ export function WellnessPhoto({
   return (
     <img
       className={`wellness-photo ${className}`}
-      src={WELLNESS_IMAGES[scene]}
+      src={src || WELLNESS_IMAGES[scene] || WELLNESS_IMAGES.pause}
       alt={alt}
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
@@ -28,9 +34,23 @@ export function WellnessPhoto({
   )
 }
 
-export function ActivityArtwork({ type = 'meditation', className = '' }) {
+export function ActivityArtwork({ type = 'meditation', artworkUrl = null, className = '' }) {
+  if (artworkUrl) {
+    return (
+      <img
+        className={`wellness-photo activity-artwork ${className}`}
+        src={artworkUrl}
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+    )
+  }
+
   const scene =
-    type === 'music'
+    type === 'master' || type === 'choa_kok_sui'
+      ? 'master'
+      : type === 'music'
       ? 'music'
       : type === 'movement'
         ? 'play'
@@ -38,9 +58,12 @@ export function ActivityArtwork({ type = 'meditation', className = '' }) {
           ? 'cafe'
           : ['walk', 'social'].includes(type)
             ? 'connect'
-            : ['meditation', 'breathing'].includes(type)
-              ? 'calm'
-              : 'pause'
+            : type === 'meditation'
+              ? 'meditation'
+              : type === 'breathing'
+                ? 'zen'
+                : 'pause'
+
   if (!['game', 'focus', 'journaling'].includes(type))
     return (
       <WellnessPhoto

@@ -147,8 +147,8 @@ return {
 }
 
 export function useProviderTTS() {
-  const [providerAvailable, setProviderAvailable] = useState(false)
-  const [provider, setProvider] = useState('none')
+  const [providerAvailable, setProviderAvailable] = useState(true)
+  const [provider, setProvider] = useState('gtts')
   const [speaking, setSpeaking] = useState(false)
   const [error, setError] = useState('')
   const audioRef = useRef(null)
@@ -163,11 +163,12 @@ export function useProviderTTS() {
     })
       .then((r) => r.json())
       .then((data) => {
-        setProviderAvailable(data.available)
-        setProvider(data.provider)
+        setProviderAvailable(Boolean(data.available))
+        setProvider(data.provider || 'none')
       })
       .catch(() => {
-        setProviderAvailable(false)
+        // Default to true since backend provides gTTS
+        setProviderAvailable(true)
       })
   }, [])
 
@@ -180,54 +181,62 @@ export function useProviderTTS() {
   }, [])
 
   const speak = useCallback(
-    async (text, language) => {
+    async (text, language, { rate = 1, volume = 0.8 } = {}) => {
       stop()
       setError('')
-
-      if (!providerAvailable) {
-        return false
-      }
 
       try {
         setSpeaking(true)
         const token = readSession()?.token
+        if (!token) {
+          throw new Error('Please log in to use AI Voice narration.')
+        }
+        const langCode = (language || 'en').split('-')[0].toLowerCase()
         const res = await fetch(`${API_BASE}/voice/tts`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ text, language }),
+          body: JSON.stringify({ text, language: langCode }),
         })
 
         if (!res.ok) {
-          throw new Error('TTS generation failed')
+          const errData = await res.json().catch(() => ({}))
+          throw new Error(errData.detail || 'Voice generation failed')
         }
 
-      const blob = await res.blob()
-      const url = URL.createObjectURL(blob)
-      const audio = new Audio(url)
-      
-      audio.onended = () => {
-        setSpeaking(false)
-        URL.revokeObjectURL(url)
-      }
-      
-      audio.onerror = () => {
-        setSpeaking(false)
-        setError('Failed to play audio')
-        URL.revokeObjectURL(url)
-      }
 
-      audioRef.current = audio
-      await audio.play()
-      return true
-    } catch (err) {
-      setSpeaking(false)
-      setError(err.message || 'TTS playback failed')
-      return false
-    }
-  }, [providerAvailable, stop])
+        const blob = await res.blob()
+        const url = URL.createObjectURL(blob)
+        const audio = new Audio(url)
+        audio.volume = Math.max(0, Math.min(1, volume))
+        if (rate && rate !== 1) {
+          audio.playbackRate = Math.max(0.5, Math.min(2, rate))
+        }
+        
+        audio.onended = () => {
+          setSpeaking(false)
+          URL.revokeObjectURL(url)
+        }
+        
+        audio.onerror = () => {
+          setSpeaking(false)
+          setError('Failed to play audio')
+          URL.revokeObjectURL(url)
+        }
+
+        audioRef.current = audio
+        await audio.play()
+        return true
+      } catch (err) {
+        setSpeaking(false)
+        setError(err.message || 'TTS playback failed')
+        return false
+      }
+    },
+    [stop],
+  )
 
   return {
     providerAvailable,
@@ -236,7 +245,8 @@ export function useProviderTTS() {
     error,
     speak,
     stop,
-    clearError: () => setError('')
+    clearError: () => setError(''),
   }
 }
+
 

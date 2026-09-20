@@ -1,38 +1,38 @@
-# Environment variables
-.venv/
-.pytest_cache/
-playwright-report/
-test-results/
-*.log
-
-# Virtual environments
-venv/
-Backend/venv/
-
-# Python cache
-__pycache__/
-Backend/**/__pycache__/
-*.pyc
-
-# Database
-*.db
-Backend/moodmentor.db
-
-# VS Code
-.vscode/
-
-Frontend/moodmentor-web/dist/
-
-# Frontend dependencies and Vite cache
-node_modules/
-Frontend/moodmentor-web/node_modules/
-*.vite
-
-# Environment variables
-Backend/.env
+# Secrets and local configurations
 .env
+*.env
 .env.*
 !.env.example
 
-pytest-cache-files-*/
-backups/
+# SQLite databases, backups, and WAL files
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+
+# Audio cache & generated binary assets
+Backend/audio_cache/
+audio_cache/
+
+# Python virtual environment and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+
+# Node / Frontend builds
+node_modules/
+dist/
+.vite/
+.eslintcache
+
+# OS generated files
+Thumbs.db
+[Dd]esktop.ini
+.DS_Store

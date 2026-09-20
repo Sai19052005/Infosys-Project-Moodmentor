@@ -691,92 +691,145 @@ function drawBunny(ctx, landmarks, width, height) {
   ctx.restore()
 }
 
-// 2. Puppy Filter 🐶
-function drawPuppy(ctx, landmarks, width, height) {
+// 2. Puppy Filter 🐶 — Fluffy floppy ears, responsive cute snout, wagging tongue
+function drawPuppy(ctx, landmarks, width, height, timestamp) {
   const m = getFaceMetrics(landmarks, width, height)
+  const t = (timestamp || performance.now()) * 0.003
 
+  // ── Floppy Ears ─────────────────────────────────────────
   ctx.save()
-  ctx.translate(m.forehead.x, m.forehead.y)
+  ctx.translate(m.forehead.x, m.forehead.y - m.faceWidth * 0.06)
   ctx.rotate(m.angle)
+
+  const earBounce = Math.sin(t) * 0.035
+
   ;[-1, 1].forEach((dir) => {
     ctx.save()
-    ctx.translate(dir * m.faceWidth * 0.52, m.faceWidth * 0.05)
-    ctx.rotate(dir * 0.38)
-    ctx.fillStyle = '#9e623b'
-    ctx.strokeStyle = '#6d3c1e'
-    ctx.lineWidth = Math.max(2, m.faceWidth * 0.018)
-    ctx.beginPath()
-    ctx.ellipse(0, 0, m.faceWidth * 0.22, m.faceWidth * 0.48, 0, 0, Math.PI * 2)
-    ctx.fill()
-    ctx.stroke()
+    ctx.translate(dir * m.faceWidth * 0.46, -m.faceWidth * 0.04)
+    ctx.rotate(dir * (0.35 + earBounce))
 
-    ctx.fillStyle = '#7a4524'
+    // Ear shadow
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.28)'
+    ctx.shadowBlur = 10
+    ctx.shadowOffsetY = 4
+
+    const earW = m.faceWidth * 0.23
+    const earH = m.faceWidth * 0.52
+
+    // Outer warm brown ear
+    const outerGrad = ctx.createLinearGradient(0, -earH * 0.5, 0, earH * 0.5)
+    outerGrad.addColorStop(0, '#78350f')
+    outerGrad.addColorStop(0.6, '#92400e')
+    outerGrad.addColorStop(1, '#b45309')
+    ctx.fillStyle = outerGrad
     ctx.beginPath()
-    ctx.ellipse(0, 0, m.faceWidth * 0.12, m.faceWidth * 0.34, 0, 0, Math.PI * 2)
+    ctx.ellipse(0, 0, earW, earH, 0, 0, Math.PI * 2)
     ctx.fill()
+
+    ctx.shadowColor = 'transparent'
+
+    // Inner warm caramel ear
+    const innerGrad = ctx.createLinearGradient(0, -earH * 0.4, 0, earH * 0.4)
+    innerGrad.addColorStop(0, '#d97706')
+    innerGrad.addColorStop(0.5, '#f59e0b')
+    innerGrad.addColorStop(1, '#fbbf24')
+    ctx.fillStyle = innerGrad
+    ctx.beginPath()
+    ctx.ellipse(0, earH * 0.05, earW * 0.55, earH * 0.65, 0, 0, Math.PI * 2)
+    ctx.fill()
+
     ctx.restore()
   })
   ctx.restore()
 
+  // ── Snout & Nose (Rotated with head angle!) ─────────────
   ctx.save()
-  ctx.fillStyle = '#c78d5e'
+  ctx.translate(m.nose.x, m.nose.y)
+  ctx.rotate(m.angle)
+
+  // Cute muzzle background
+  const muzzleW = m.faceWidth * 0.26
+  const muzzleH = m.faceWidth * 0.18
+  const muzzleGrad = ctx.createRadialGradient(0, muzzleH * 0.2, 0, 0, muzzleH * 0.2, muzzleW)
+  muzzleGrad.addColorStop(0, 'rgba(254, 243, 199, 0.96)')
+  muzzleGrad.addColorStop(0.75, 'rgba(253, 230, 138, 0.88)')
+  muzzleGrad.addColorStop(1, 'rgba(245, 158, 11, 0)')
+  ctx.fillStyle = muzzleGrad
   ctx.beginPath()
-  ctx.ellipse(
-    m.nose.x,
-    m.nose.y + m.faceWidth * 0.07,
-    m.faceWidth * 0.22,
-    m.faceWidth * 0.16,
-    0,
-    0,
-    Math.PI * 2,
-  )
+  ctx.ellipse(0, muzzleH * 0.22, muzzleW, muzzleH, 0, 0, Math.PI * 2)
   ctx.fill()
 
-  ctx.fillStyle = '#221611'
+  // Whiskers dots
+  ctx.fillStyle = '#78350f'
+  ;[-1, 1].forEach((dir) => {
+    for (const [ox, oy] of [
+      [dir * muzzleW * 0.45, muzzleH * 0.12],
+      [dir * muzzleW * 0.62, muzzleH * 0.26],
+      [dir * muzzleW * 0.42, muzzleH * 0.42],
+    ]) {
+      ctx.beginPath()
+      ctx.arc(ox, oy, m.faceWidth * 0.009, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  })
+
+  // Puppy Tongue (responds smoothly to mouth opening)
+  const tongueProgress = m.mouthOpen ? 1.0 : 0.6
+  const tongueW = m.faceWidth * 0.13
+  const tongueH = m.faceWidth * (0.2 + 0.15 * tongueProgress)
+  const tongueY = muzzleH * 0.55
+
+  ctx.save()
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.22)'
+  ctx.shadowBlur = 6
+  ctx.shadowOffsetY = 3
+
+  const tongueGrad = ctx.createLinearGradient(0, tongueY, 0, tongueY + tongueH)
+  tongueGrad.addColorStop(0, '#f43f5e')
+  tongueGrad.addColorStop(0.7, '#fb7185')
+  tongueGrad.addColorStop(1, '#f43f5e')
+  ctx.fillStyle = tongueGrad
   ctx.beginPath()
-  ctx.ellipse(
-    m.nose.x,
-    m.nose.y - m.faceWidth * 0.01,
-    m.faceWidth * 0.08,
-    m.faceWidth * 0.055,
-    0,
-    0,
-    Math.PI * 2,
-  )
+  ctx.moveTo(-tongueW * 0.5, tongueY)
+  ctx.lineTo(-tongueW * 0.5, tongueY + tongueH * 0.65)
+  ctx.quadraticCurveTo(0, tongueY + tongueH * 1.15, tongueW * 0.5, tongueY + tongueH * 0.65)
+  ctx.lineTo(tongueW * 0.5, tongueY)
+  ctx.closePath()
   ctx.fill()
 
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.45)'
+  // Center crease in tongue
+  ctx.strokeStyle = '#e11d48'
+  ctx.lineWidth = Math.max(1.5, m.faceWidth * 0.008)
   ctx.beginPath()
-  ctx.ellipse(
-    m.nose.x - m.faceWidth * 0.025,
-    m.nose.y - m.faceWidth * 0.02,
-    m.faceWidth * 0.02,
-    m.faceWidth * 0.012,
-    0,
-    0,
-    Math.PI * 2,
-  )
-  ctx.fill()
-
-  const tongueLength = m.mouthOpen ? m.faceWidth * 0.35 : m.faceWidth * 0.22
-  ctx.fillStyle = '#ff7597'
-  ctx.beginPath()
-  ctx.ellipse(
-    m.upperLip.x,
-    m.upperLip.y + tongueLength * 0.55,
-    m.faceWidth * 0.11,
-    tongueLength * 0.55,
-    0,
-    0,
-    Math.PI * 2,
-  )
-  ctx.fill()
-  ctx.strokeStyle = '#e05377'
-  ctx.lineWidth = Math.max(1.5, m.faceWidth * 0.012)
-  ctx.beginPath()
-  ctx.moveTo(m.upperLip.x, m.upperLip.y + m.faceWidth * 0.02)
-  ctx.lineTo(m.upperLip.x, m.upperLip.y + tongueLength * 0.9)
+  ctx.moveTo(0, tongueY + tongueH * 0.15)
+  ctx.lineTo(0, tongueY + tongueH * 0.8)
   ctx.stroke()
+  ctx.restore()
+
+  // Shiny button nose
+  const noseW = m.faceWidth * 0.095
+  const noseH = m.faceWidth * 0.065
+  ctx.save()
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.35)'
+  ctx.shadowBlur = 6
+  ctx.shadowOffsetY = 2
+
+  const noseGrad = ctx.createLinearGradient(0, -noseH, 0, noseH)
+  noseGrad.addColorStop(0, '#262626')
+  noseGrad.addColorStop(0.5, '#171717')
+  noseGrad.addColorStop(1, '#0a0a0a')
+  ctx.fillStyle = noseGrad
+  ctx.beginPath()
+  ctx.roundRect(-noseW * 0.5, -noseH * 0.4, noseW, noseH, [noseH * 0.4, noseH * 0.4, noseH * 0.6, noseH * 0.6])
+  ctx.fill()
+  ctx.restore()
+
+  // Cute moist shine highlight on nose
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
+  ctx.beginPath()
+  ctx.ellipse(-noseW * 0.2, -noseH * 0.15, noseW * 0.22, noseH * 0.18, -0.2, 0, Math.PI * 2)
+  ctx.fill()
+
   ctx.restore()
 }
 
@@ -1554,101 +1607,193 @@ function drawFlowerCrown(ctx, landmarks, width, height, timestamp) {
   ctx.restore()
 }
 
-// 16. Gentleman 🎩 — Top hat, monocle, mustache
+// 16. Gentleman 🎩 — Deluxe Top hat, gold monocle, dapper handlebar mustache
 function drawGentleman(ctx, landmarks, width, height, timestamp) {
   const m = getFaceMetrics(landmarks, width, height)
-  const t = timestamp || performance.now()
 
+  // ── Top Hat ─────────────────────────────────────────────
   ctx.save()
-  ctx.translate(m.forehead.x, m.forehead.y - m.faceWidth * 0.08)
+  // Position cleanly above forehead, angled with head tilt
+  ctx.translate(m.forehead.x, m.forehead.y - m.faceWidth * 0.16)
   ctx.rotate(m.angle)
 
-  // Top hat — body
-  const hatW = m.faceWidth * 0.55
-  const hatH = m.faceWidth * 0.5
-  ctx.fillStyle = '#1c1917'
+  const hatW = m.faceWidth * 0.62
+  const hatH = m.faceWidth * 0.58
+  const brimW = hatW * 1.45
+  const brimH = m.faceWidth * 0.12
+
+  // Subtle drop shadow under brim
+  ctx.save()
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.45)'
+  ctx.shadowBlur = 14
+  ctx.shadowOffsetY = 6
+
+  // Crown body (silk top-hat cylinder)
+  const crownGrad = ctx.createLinearGradient(-hatW * 0.5, 0, hatW * 0.5, 0)
+  crownGrad.addColorStop(0, '#1c1917')
+  crownGrad.addColorStop(0.35, '#383532')
+  crownGrad.addColorStop(0.65, '#262320')
+  crownGrad.addColorStop(1, '#141210')
+
+  ctx.fillStyle = crownGrad
   ctx.beginPath()
-  ctx.roundRect(-hatW * 0.5, -hatH, hatW, hatH, [8, 8, 0, 0])
+  const topW = hatW * 1.08
+  ctx.moveTo(-hatW * 0.48, 0)
+  ctx.lineTo(-topW * 0.5, -hatH)
+  ctx.quadraticCurveTo(0, -hatH - m.faceWidth * 0.04, topW * 0.5, -hatH)
+  ctx.lineTo(hatW * 0.48, 0)
+  ctx.closePath()
   ctx.fill()
-  ctx.strokeStyle = '#57534e'
+  ctx.restore() // End shadow
+
+  // Crimson satin band
+  const bandGrad = ctx.createLinearGradient(-hatW * 0.5, 0, hatW * 0.5, 0)
+  bandGrad.addColorStop(0, '#7f1d1d')
+  bandGrad.addColorStop(0.4, '#dc2626')
+  bandGrad.addColorStop(1, '#991b1b')
+  ctx.fillStyle = bandGrad
+  ctx.beginPath()
+  const bandH = m.faceWidth * 0.09
+  ctx.moveTo(-hatW * 0.485, 0)
+  ctx.lineTo(-hatW * 0.49, -bandH)
+  ctx.lineTo(hatW * 0.49, -bandH)
+  ctx.lineTo(hatW * 0.485, 0)
+  ctx.closePath()
+  ctx.fill()
+
+  // Gold buckle on the band
+  ctx.fillStyle = '#f59e0b'
+  ctx.strokeStyle = '#78350f'
+  ctx.lineWidth = 1.5
+  ctx.beginPath()
+  ctx.roundRect(-hatW * 0.08, -bandH * 0.95, hatW * 0.16, bandH * 0.9, 3)
+  ctx.fill()
+  ctx.stroke()
+  ctx.fillStyle = '#7f1d1d'
+  ctx.fillRect(-hatW * 0.04, -bandH * 0.75, hatW * 0.08, bandH * 0.5)
+
+  // Brim (curved Victorian style)
+  const brimGrad = ctx.createLinearGradient(0, -brimH * 0.5, 0, brimH * 0.5)
+  brimGrad.addColorStop(0, '#292524')
+  brimGrad.addColorStop(0.5, '#1c1917')
+  brimGrad.addColorStop(1, '#0c0a09')
+  ctx.fillStyle = brimGrad
+  ctx.beginPath()
+  ctx.ellipse(0, 0, brimW * 0.5, brimH * 0.5, 0, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.strokeStyle = '#44403c'
   ctx.lineWidth = 1.5
   ctx.stroke()
-
-  // Hat brim
-  ctx.fillStyle = '#0c0a09'
-  ctx.beginPath()
-  ctx.ellipse(0, 0, hatW * 0.7, m.faceWidth * 0.06, 0, 0, Math.PI * 2)
-  ctx.fill()
-
-  // Hat band
-  ctx.fillStyle = '#991b1b'
-  ctx.fillRect(-hatW * 0.5, -m.faceWidth * 0.12, hatW, m.faceWidth * 0.06)
   ctx.restore()
 
-  // Monocle on right eye
+  // ── Monocle ─────────────────────────────────────────────
   ctx.save()
-  ctx.strokeStyle = '#f59e0b'
-  ctx.lineWidth = Math.max(3, m.faceWidth * 0.02)
-  ctx.beginPath()
-  ctx.arc(
-    m.rightEyeCenter.x,
-    m.rightEyeCenter.y,
-    m.faceWidth * 0.12,
-    0,
-    Math.PI * 2,
-  )
-  ctx.stroke()
-
-  // Monocle chain
-  ctx.strokeStyle = '#d4a100'
-  ctx.lineWidth = Math.max(1.5, m.faceWidth * 0.01)
-  ctx.beginPath()
-  ctx.moveTo(
-    m.rightEyeCenter.x + m.faceWidth * 0.12,
-    m.rightEyeCenter.y + m.faceWidth * 0.04,
-  )
-  ctx.quadraticCurveTo(
-    m.rightCheek.x,
-    m.chin.y - m.faceWidth * 0.1,
-    m.rightCheek.x - m.faceWidth * 0.1,
-    m.chin.y,
-  )
-  ctx.stroke()
-
-  // Glass glare
-  ctx.fillStyle = 'rgba(255,255,255,0.15)'
-  ctx.beginPath()
-  ctx.arc(
-    m.rightEyeCenter.x,
-    m.rightEyeCenter.y,
-    m.faceWidth * 0.11,
-    0,
-    Math.PI * 2,
-  )
-  ctx.fill()
-  ctx.restore()
-
-  // Handlebar mustache
-  ctx.save()
-  ctx.translate(m.upperLip.x, m.upperLip.y - m.faceWidth * 0.02)
+  ctx.translate(m.rightEyeCenter.x, m.rightEyeCenter.y)
   ctx.rotate(m.angle)
-  ctx.fillStyle = '#292524'
+
+  const monoRadius = m.faceWidth * 0.125
+
+  // Glass lens with subtle reflection
+  const glassGrad = ctx.createRadialGradient(
+    -monoRadius * 0.25,
+    -monoRadius * 0.25,
+    monoRadius * 0.1,
+    0,
+    0,
+    monoRadius,
+  )
+  glassGrad.addColorStop(0, 'rgba(255, 255, 255, 0.35)')
+  glassGrad.addColorStop(0.6, 'rgba(219, 234, 254, 0.12)')
+  glassGrad.addColorStop(1, 'rgba(191, 219, 254, 0.22)')
+  ctx.fillStyle = glassGrad
+  ctx.beginPath()
+  ctx.arc(0, 0, monoRadius, 0, Math.PI * 2)
+  ctx.fill()
+
+  // Polished gold rim
+  ctx.save()
+  ctx.shadowColor = 'rgba(245, 158, 11, 0.4)'
+  ctx.shadowBlur = 6
+  const rimGrad = ctx.createLinearGradient(-monoRadius, -monoRadius, monoRadius, monoRadius)
+  rimGrad.addColorStop(0, '#fef08a')
+  rimGrad.addColorStop(0.3, '#f59e0b')
+  rimGrad.addColorStop(0.7, '#d97706')
+  rimGrad.addColorStop(1, '#fef08a')
+  ctx.strokeStyle = rimGrad
+  ctx.lineWidth = Math.max(2.5, m.faceWidth * 0.016)
+  ctx.beginPath()
+  ctx.arc(0, 0, monoRadius, 0, Math.PI * 2)
+  ctx.stroke()
+  ctx.restore()
+
+  // Gallery tabs (vintage monocle clips)
+  ctx.fillStyle = '#f59e0b'
   ;[-1, 1].forEach((dir) => {
     ctx.beginPath()
-    ctx.moveTo(0, 0)
-    ctx.quadraticCurveTo(
-      dir * m.faceWidth * 0.15,
-      -m.faceWidth * 0.05,
-      dir * m.faceWidth * 0.25,
-      -m.faceWidth * 0.06,
+    ctx.roundRect(-monoRadius * 0.15, dir * (monoRadius - 1), monoRadius * 0.3, dir * (monoRadius * 0.14), 2)
+    ctx.fill()
+  })
+
+  // Diagonal glare streak
+  ctx.save()
+  ctx.beginPath()
+  ctx.arc(0, 0, monoRadius - 2, 0, Math.PI * 2)
+  ctx.clip()
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.22)'
+  ctx.beginPath()
+  ctx.ellipse(-monoRadius * 0.3, -monoRadius * 0.1, monoRadius * 0.2, monoRadius * 0.7, 0.6, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.restore()
+
+  // Elegant golden chain draping along cheek
+  ctx.strokeStyle = '#f59e0b'
+  ctx.lineWidth = Math.max(1.6, m.faceWidth * 0.009)
+  ctx.setLineDash([4, 3])
+  ctx.beginPath()
+  ctx.moveTo(monoRadius * 0.95, monoRadius * 0.2)
+  ctx.quadraticCurveTo(monoRadius * 1.5, monoRadius * 1.8, monoRadius * 0.8, monoRadius * 2.6)
+  ctx.stroke()
+  ctx.setLineDash([])
+  ctx.restore()
+
+  // ── Dapper Handlebar Mustache ───────────────────────────
+  ctx.save()
+  const mustY = (m.nose.y * 0.35 + m.upperLip.y * 0.65)
+  ctx.translate(m.nose.x, mustY)
+  ctx.rotate(m.angle)
+
+  // Soft shadow under mustache
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.35)'
+  ctx.shadowBlur = 6
+  ctx.shadowOffsetY = 2
+
+  const mustW = m.faceWidth * 0.28
+  const mustH = m.faceWidth * 0.075
+
+  const mustGrad = ctx.createLinearGradient(-mustW, 0, mustW, 0)
+  mustGrad.addColorStop(0, '#1c1917')
+  mustGrad.addColorStop(0.5, '#292524')
+  mustGrad.addColorStop(1, '#1c1917')
+  ctx.fillStyle = mustGrad
+
+  ;[-1, 1].forEach((dir) => {
+    ctx.beginPath()
+    ctx.moveTo(0, -mustH * 0.1)
+    ctx.bezierCurveTo(
+      dir * mustW * 0.35, -mustH * 0.8,
+      dir * mustW * 0.85, -mustH * 0.5,
+      dir * mustW * 1.05, -mustH * 1.1,
     )
-    ctx.quadraticCurveTo(
-      dir * m.faceWidth * 0.28,
-      -m.faceWidth * 0.08,
-      dir * m.faceWidth * 0.22,
-      -m.faceWidth * 0.03,
+    ctx.bezierCurveTo(
+      dir * mustW * 1.15, -mustH * 1.35,
+      dir * mustW * 1.05, -mustH * 0.6,
+      dir * mustW * 0.9, -mustH * 0.2,
     )
-    ctx.quadraticCurveTo(dir * m.faceWidth * 0.12, 0, 0, m.faceWidth * 0.015)
+    ctx.bezierCurveTo(
+      dir * mustW * 0.7, mustH * 0.55,
+      dir * mustW * 0.35, mustH * 0.65,
+      0, mustH * 0.25,
+    )
     ctx.closePath()
     ctx.fill()
   })
@@ -2095,6 +2240,52 @@ function drawFireAura(ctx, landmarks, width, height, timestamp) {
   ctx.restore()
 }
 
+class LandmarkStabilizer {
+  constructor(smoothing = 0.42, maxMissed = 8) {
+    this.smoothing = smoothing
+    this.smoothed = null
+    this.missed = 0
+    this.maxMissed = maxMissed
+  }
+
+  update(raw) {
+    if (!raw || !raw.length) {
+      this.missed++
+      if (this.missed > this.maxMissed) {
+        this.smoothed = null
+      }
+      return this.smoothed
+    }
+
+    this.missed = 0
+    if (!this.smoothed || this.smoothed.length !== raw.length) {
+      this.smoothed = raw.map((p) => ({ x: p.x, y: p.y, z: p.z || 0 }))
+      return this.smoothed
+    }
+
+    const a = this.smoothing
+    const invA = 1 - a
+    for (let i = 0; i < raw.length; i++) {
+      const s = this.smoothed[i]
+      const r = raw[i]
+      s.x = s.x * invA + r.x * a
+      s.y = s.y * invA + r.y * a
+      s.z = (s.z || 0) * invA + (r.z || 0) * a
+    }
+    return this.smoothed
+  }
+
+  get() {
+    if (this.missed > this.maxMissed) return null
+    return this.smoothed
+  }
+
+  reset() {
+    this.smoothed = null
+    this.missed = 0
+  }
+}
+
 export default function MoodStudio() {
   const videoRef = useRef(null)
   const streamRef = useRef(null)
@@ -2222,163 +2413,184 @@ export default function MoodStudio() {
         if (cancelled) return
         setTrackingState('ready')
 
+        const stabilizer = new LandmarkStabilizer(0.38, 10)
+
         const render = (time) => {
           if (cancelled || !video.videoWidth || !canvas) return
           const context = canvas.getContext('2d')
-          context.clearRect(0, 0, canvas.width, canvas.height)
+
+          // 1. Detect new landmarks whenever video frame updates
           if (video.currentTime !== lastVideoTimeRef.current) {
             lastVideoTimeRef.current = video.currentTime
-            const result = faceLandmarkerRef.current.detectForVideo(
-              video,
-              performance.now(),
-            )
-            const landmarks = result.faceLandmarks?.[0]
-            if (landmarks) {
-              switch (currentFilter.ar) {
-                case 'bunny':
-                  drawBunny(context, landmarks, canvas.width, canvas.height)
-                  break
-                case 'puppy':
-                  drawPuppy(context, landmarks, canvas.width, canvas.height)
-                  break
-                case 'celebrate':
-                  drawCelebrate(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                case 'cat':
-                  drawCat(context, landmarks, canvas.width, canvas.height)
-                  break
-                case 'shades':
-                  drawShades(context, landmarks, canvas.width, canvas.height)
-                  break
-                case 'halo':
-                  drawHalo(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                case 'heart_eyes':
-                  drawHeartEyes(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                case 'devil':
-                  drawDevil(context, landmarks, canvas.width, canvas.height)
-                  break
-                case 'star_freckles':
-                  drawStarFreckles(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                case 'clown':
-                  drawClown(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                case 'pirate':
-                  drawPirate(context, landmarks, canvas.width, canvas.height)
-                  break
-                case 'rainbow_tears':
-                  drawRainbowTears(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                case 'wizard':
-                  drawWizard(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                case 'alien':
-                  drawAlien(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                case 'flower_crown':
-                  drawFlowerCrown(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                case 'gentleman':
-                  drawGentleman(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                case 'tiger':
-                  drawTiger(context, landmarks, canvas.width, canvas.height)
-                  break
-                case 'butterfly':
-                  drawButterfly(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                case 'frog':
-                  drawFrog(context, landmarks, canvas.width, canvas.height)
-                  break
-                case 'ice_queen':
-                  drawIceQueen(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                case 'fire_aura':
-                  drawFireAura(
-                    context,
-                    landmarks,
-                    canvas.width,
-                    canvas.height,
-                    time,
-                  )
-                  break
-                default:
-                  break
-              }
+            try {
+              const result = faceLandmarkerRef.current.detectForVideo(
+                video,
+                performance.now(),
+              )
+              const raw = result.faceLandmarks?.[0]
+              stabilizer.update(raw)
+            } catch {
+              // Ignore transient detector hiccups
+            }
+          }
+
+          // 2. Clear canvas on animation frame
+          context.clearRect(0, 0, canvas.width, canvas.height)
+
+          // 3. Render continuously at screen refresh rate with stabilized landmarks
+          const landmarks = stabilizer.get()
+          if (landmarks) {
+            // Anti-flicker smoothing if a frame was temporarily missed
+            if (stabilizer.missed > 0) {
+              context.globalAlpha = Math.max(0.3, 1 - stabilizer.missed / 10)
+            } else {
+              context.globalAlpha = 1.0
+            }
+
+            switch (currentFilter.ar) {
+              case 'bunny':
+                drawBunny(context, landmarks, canvas.width, canvas.height)
+                break
+              case 'puppy':
+                drawPuppy(context, landmarks, canvas.width, canvas.height, time)
+                break
+              case 'celebrate':
+                drawCelebrate(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              case 'cat':
+                drawCat(context, landmarks, canvas.width, canvas.height)
+                break
+              case 'shades':
+                drawShades(context, landmarks, canvas.width, canvas.height)
+                break
+              case 'halo':
+                drawHalo(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              case 'heart_eyes':
+                drawHeartEyes(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              case 'devil':
+                drawDevil(context, landmarks, canvas.width, canvas.height)
+                break
+              case 'star_freckles':
+                drawStarFreckles(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              case 'clown':
+                drawClown(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              case 'pirate':
+                drawPirate(context, landmarks, canvas.width, canvas.height)
+                break
+              case 'rainbow_tears':
+                drawRainbowTears(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              case 'wizard':
+                drawWizard(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              case 'alien':
+                drawAlien(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              case 'flower_crown':
+                drawFlowerCrown(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              case 'gentleman':
+                drawGentleman(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              case 'tiger':
+                drawTiger(context, landmarks, canvas.width, canvas.height)
+                break
+              case 'butterfly':
+                drawButterfly(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              case 'frog':
+                drawFrog(context, landmarks, canvas.width, canvas.height)
+                break
+              case 'ice_queen':
+                drawIceQueen(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              case 'fire_aura':
+                drawFireAura(
+                  context,
+                  landmarks,
+                  canvas.width,
+                  canvas.height,
+                  time,
+                )
+                break
+              default:
+                break
             }
           }
           faceAnimationRef.current = requestAnimationFrame(render)
@@ -2513,10 +2725,10 @@ export default function MoodStudio() {
     ctx.fillStyle = '#333'
     ctx.font = 'bold 30px sans-serif'
     ctx.textAlign = 'center'
-    ctx.fillText('MoodMentor', canvas.width / 2, canvas.height - 20)
+    ctx.fillText('Emotion Care', canvas.width / 2, canvas.height - 20)
 
     const link = document.createElement('a')
-    link.download = 'moodmentor-photobooth.png'
+    link.download = 'emotion-care-photobooth.png'
     link.href = canvas.toDataURL('image/png')
     link.click()
   }

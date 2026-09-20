@@ -19,6 +19,584 @@ export const BREATH_LABELS = {
 // ─── Multi-Language Meditation Programs ───────────────────────────────────
 export const PROGRAMS = [
   {
+    id: 'ravi_shankar_10min',
+    title: '10-Min Meditation · Sri Sri Ravi Shankar',
+    guide: 'Gurudev Sri Sri Ravi Shankar',
+    category: 'Deep Calm',
+    icon: '🧘',
+    color: '#d97706',
+    duration: 628,
+    difficulty: 'All levels',
+    defaultAmbient: 'none',
+    audioUrl: '/audio/meditations/ravi_shankar_10min.mp3',
+    artworkUrl: '/images/meditation-ravi-shankar.png',
+    hasMasterAudio: true,
+    moodMatch: ['sadness', 'fear', 'anger', 'neutral', 'joy'],
+    description: 'A sublime 10-minute bilingual guided meditation on breath, body awareness, and boundless stillness by Gurudev Sri Sri Ravi Shankar.',
+    whyGeneric: 'Connect with inner stillness, soften mental chatter, and repose in deep peace with Gurudev Sri Sri Ravi Shankar.',
+    phases: [
+      {
+        start: 0, end: 20, breath: { inhale: 4, hold: 2, exhale: 4 },
+        caption: 'Let us sit comfortably and easily. Keep our spine erect, रीढ़ की हड्डी सीधा रखें, कंधों को ढीला छोड़ दें, और आंखें बंद कर लीजिएगा.',
+        instruction: {
+          en: 'Sit comfortably and easily. Keep your spine erect, loosen shoulders, and gently close your eyes.',
+          hi: 'आराम से बैठ जाएं। रीढ़ की हड्डी सीधी रखें, कंधों को ढीला छोड़ दें, और आंखें बंद कर लीजिए।',
+          mr: 'शांत आणि आरामदायक स्थितीत बसा. पाठीचा कणा सरळ ठेवा, खांदे सैल सोडा आणि हळूच डोळे मिटून घ्या.',
+          ta: 'வசதியாக அமருங்கள். முதுகெலும்பை நேராக வைத்து, தோள்களை தளர்த்தி, கண்களை மெதுவாக மூடுங்கள்.',
+          ml: 'സുഖമായി ഇരിക്കുക. നട്ടെല്ല് നേരെയാക്കി, തോളുകൾ അയച്ചു, സാവധാനം കണ്ണുകൾ അടയ്ക്കുക.',
+        },
+        voice: {
+          en: 'Sit comfortably and easily. Keep your spine erect, loosen your shoulders, and gently close your eyes.',
+          hi: 'आराम से बैठ जाएं। रीढ़ की हड्डी सीधी रखें, कंधों को ढीला छोड़ें, और आंखें बंद कर लें।',
+          mr: 'शांत बसा. कणा सरळ ठेवा, खांदे सैल सोडा आणि डोळे मिटा.',
+          ta: 'வசதியாக அமருங்கள். கண்களை மூடுங்கள்.',
+          ml: 'സുഖമായി ഇരിക്കുക. കണ്ണുകൾ അടയ്ക്കുക.',
+        }
+      },
+      {
+        start: 21, end: 43, breath: { inhale: 4, hold: 4, exhale: 5 },
+        caption: 'एक गहरी सांस लीजिए, और सांस को रोकिए. और रोकना छोड़ दें, सांस अपने आप बाहर निकलने दें.',
+        instruction: {
+          en: 'Take a deep breath in, and gently hold the breath. Then release the hold, letting the breath flow out on its own.',
+          hi: 'एक गहरी सांस लीजिए, और सांस को रोकिए। और रोकना छोड़ दें, सांस अपने आप बाहर निकलने दें।',
+          mr: 'एक दीर्घ श्वास आत घ्या आणि रोखून धरा. नंतर हळूच श्वास आपोआप बाहेर पडू द्या.',
+          ta: 'ஆழமாக மூச்சை உள்ளிழுத்து நிறுத்தவும். பின்னர் விட்டுவிடவும், மூச்சு தானாக வெளிவரட்டும்.',
+          ml: 'ഒരു ദീർഘശ്വാസം ഉള്ളിലേക്ക് എടുത്ത് പിടിക്കുക. പിന്നീട് ശ്വാസം പുറത്തുപോകാൻ അനുവദിക്കുക.',
+        },
+        voice: {
+          en: 'Take a deep breath in and hold. Now let go, and let the breath flow out.',
+          hi: 'एक गहरी सांस लें और रोकें। अब छोड़ दें, सांस बाहर जाने दें।',
+          mr: 'दीर्घ श्वास घ्या आणि थांबवा. आता श्वास बाहेर पडू द्या.',
+          ta: 'ஆழமாக சுவாசித்து நிறுத்தவும். பின் வெளிவிடவும்.',
+          ml: 'ദീർഘശ്വാസമെടുത്ത് നിർത്തുക. ശേഷം വിട്ടയക്കുക.',
+        }
+      },
+      {
+        start: 44, end: 78, breath: { inhale: 4, hold: 4, exhale: 6 },
+        caption: 'और अपने आप सांस फिर भरने लगेगा, भरने दीजिए. सांस पूरी तरह से भरने के बाद रोकिए. जब सांस रोकते हैं मन की स्थिति देख लीजिएगा. और रोकना धीरे-धीरे छोड़िए, और सांस अपने आप बाहर आने लग जाएगी.',
+        instruction: {
+          en: 'Breath fills on its own; let it fill. Once fully filled, pause and hold. Observe the state of your mind as you hold. Slowly release.',
+          hi: 'सांस अपने आप भरने लगेगी, भरने दें। पूरी तरह भरने के बाद रोकें। सांस रोकते समय मन की स्थिति देखें। धीरे-धीरे छोड़ें।',
+          mr: 'श्वास आपोआप भरू द्या. पूर्ण भरल्यावर रोखा. श्वास रोखताना मनाची शांत स्थिती अनुभवा. हळूहळू सोडा.',
+          ta: 'மூச்சு தானாக நிரம்பட்டும். முழுமையாக நிரம்பியதும் நிறுத்தவும். மனதின் நிலையை கவனியுங்கள். மெதுவாக விடுங்கள்.',
+          ml: 'ശ്വാസം നിറയാൻ അനുവദിക്കുക. ശേഷം പിടിക്കുക. മനസ്സിനെ നിരീക്ഷിക്കുക. സാവധാനം വിടുക.',
+        },
+        voice: {
+          en: 'Let the breath fill on its own. Hold, observe your mind in stillness, and gently release.',
+          hi: 'सांस भरने दें। रोककर मन की स्थिति देखें, और धीरे से छोड़ें।',
+          mr: 'श्वास भरू द्या. रोखून मनाची स्थिती अनुभवा, आणि हळूच सोडा.',
+          ta: 'மூச்சை நிறுத்தி மனதை கவனியுங்கள். மெதுவாக விடுங்கள்.',
+          ml: 'ശ്വാസം പിടിച്ച് മനസ്സ് കാണുക. സാവധാനം വിടുക.',
+        }
+      },
+      {
+        start: 79, end: 133, breath: { inhale: 5, hold: 5, exhale: 6 },
+        caption: 'फिर एक बार सांस लेंगे, सांस पूरा भरने के बाद रोकेंगे. रोककर अपना मन की स्थिति पर ध्यान देंगे. सब थम सा गया है, सब रुक गया है. सांस रुकते ही मन भी रुक जाता है. और ज्यादा रोक नहीं पाएंगे तो आप रोकना बंद कर दीजिए. अब शरीर को सुकून मिल रहा है, विश्राम मिल रहा है.',
+        instruction: {
+          en: 'Once again, breathe in deeply and hold. Notice your mind. Everything has come to a standstill. As the breath pauses, the mind pauses. Rest in this profound relief.',
+          hi: 'फिर एक बार सांस लेंगे और रोकेंगे। मन की स्थिति पर ध्यान दें। सब थम सा गया है। सांस रुकते ही मन भी रुक जाता है। शरीर को विश्राम और सुकून मिल रहा है।',
+          mr: 'पुन्हा एकदा दीर्घ श्वास घ्या आणि थांबवा. सर्व काही स्तब्ध झाले आहे. श्वास थांबताच मनही शांत होते. शरीराला विश्रांती अनुभवू द्या.',
+          ta: 'மீண்டும் ஆழமாக சுவாசித்து நிறுத்தவும். எல்லாம் அமைதியாகிவிட்டது. மூச்சு நின்றதும் மனமும் அமைதியாகிறது. உடல் ஓய்வெடுக்கிறது.',
+          ml: 'വീണ്ടും ദീർഘമായി ശ്വാസമെടുത്ത് നിർത്തുക. മനസ്സ് പൂർണ്ണ ശാന്തതയിലാണ്. ശരീരം ആഴത്തിൽ വിശ്രമിക്കുന്നു.',
+        },
+        voice: {
+          en: 'Breathe in and hold. As the breath pauses, the mind pauses. Rest in deep peace.',
+          hi: 'सांस लें और रोकें। सांस रुकते ही मन भी ठहर जाता है। गहरे विश्राम में रहें।',
+          mr: 'श्वास घ्या आणि थांबा. श्वास थांबताच मन शांत होते. विश्रांती घ्या.',
+          ta: 'சுவாசித்து நிறுத்துங்கள். மனம் அமைதியாகிறது. ஓய்வெடுங்கள்.',
+          ml: 'ശ്വാസമെടുത്ത് നിർത്തുക. മനസ്സ് ശാന്തമാകുന്നു. വിശ്രമിക്കുക.',
+        }
+      },
+      {
+        start: 134, end: 186, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: 'मन ही मन अपना शरीर के प्रति सम्मान का भाव रखें. अरबों खरबों अणु परमाणुओं से बना है आपका शरीर. यह शरीर हमारे लिए मिला हुआ एक अद्भुत देन है. Honor your own body, your body is the most precious gift to you from nature.',
+        instruction: {
+          en: 'Hold deep reverence for your body. Formed from trillions of atoms and cells, your body is nature\'s most precious gift to you.',
+          hi: 'मन ही मन अपने शरीर के प्रति सम्मान का भाव रखें। अरबों खरबों अणु-परमाणुओं से बना यह शरीर प्रकृति की अनमोल देन है।',
+          mr: 'मनातल्या मनात शरीराबद्दल कृतज्ञता बाळगा. अब्जावधी पेशींनी बनलेले हे शरीर निसर्गाची अनमोल भेट आहे.',
+          ta: 'உங்கள் உடலுக்கு ஆழ்ந்த மரியாதை செலுத்துங்கள். இது இயற்கையின் விலைமதிப்பற்ற பரிசு.',
+          ml: 'നിങ്ങളുടെ ശരീരത്തെ ആദരിക്കുക. പ്രകൃതി തന്ന വിലമതിക്കാനാവാത്ത സമ്മാനമാണിത്.',
+        },
+        voice: {
+          en: 'Honor your own body. It is the most precious gift to you from nature.',
+          hi: 'अपने शरीर के प्रति सम्मान रखें। यह प्रकृति का अनमोल उपहार है।',
+          mr: 'शरीराबद्दल आदर बाळगा. ही निसर्गाची अनमोल देणगी आहे.',
+          ta: 'உங்கள் உடலை மதியுங்கள். இது இயற்கையின் கொடை.',
+          ml: 'ശരീരത്തെ ആദരിക്കുക. പ്രകൃതിയുടെ സമ്മാനമാണിത്.',
+        }
+      },
+      {
+        start: 187, end: 252, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: 'Now become aware of the air all around you and inside of you. The second dimension: the breath. It is the breath that is keeping us alive. यह सांस ही हमारा साथी रही है. जैसे जल में मछली, ऐसे हवा में हम हैं. Feel the air inside and outside simultaneously.',
+        instruction: {
+          en: 'Awaken to the second dimension: the breath. Like fish in water, we live in an ocean of air. Feel the air inside and outside of you simultaneously.',
+          hi: 'दूसरे आयाम के प्रति सजग हों: सांस। जैसे जल में मछली, वैसे हवा में हम हैं। भीतर और बाहर की हवा को एक साथ महसूस करें।',
+          mr: 'दुसऱ्या मितीकडे लक्ष द्या: श्वास. जसा पाण्यात मासा, तसे आपण हवेत आहोत. आतील आणि बाहेरील हवा एकत्र अनुभवा.',
+          ta: 'இரண்டாவது பரிமாணம்: சுவாசம். காற்றில் நாம் மீன் போல மிதக்கிறோம். உள் மற்றும் வெளி காற்றை ஒரே நேரத்தில் உணருங்கள்.',
+          ml: 'രണ്ടാമത്തെ തലം: ശ്വാസം. നമ്മൾ വായുവിൽ മീനുകളെപ്പോലെയാണ്. അകത്തെയും പുറത്തെയും വായു അറിയുക.',
+        },
+        voice: {
+          en: 'Become aware of the air all around and within you. Feel the air inside and outside simultaneously.',
+          hi: 'भीतर और बाहर की हवा को एक साथ महसूस करें। यह सांस जीवन की साथी है।',
+          mr: 'आतील आणि बाहेरील हवा एकत्र अनुभवा. श्वास आपला सोबती आहे.',
+          ta: 'உள் மற்றும் வெளி காற்றை ஒரே நேரத்தில் உணருங்கள்.',
+          ml: 'അകത്തും പുറത്തുമുള്ള വായുവിനെ അനുഭവിക്കുക.',
+        }
+      },
+      {
+        start: 253, end: 276, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: 'Now breathe in with a smile, and breathe out with a smile. As you smile, all the muscles in your face and the brain gets deep relaxation.',
+        instruction: {
+          en: 'Breathe in with a gentle smile, and breathe out with a smile. As you smile, facial muscles soften and the brain enjoys deep relaxation.',
+          hi: 'मुस्कुराते हुए सांस लें, मुस्कुराते हुए सांस छोड़ें। चेहरे की मांसपेशियों और मस्तिष्क को गहरा विश्राम मिलता है।',
+          mr: 'हसतमुखाने श्वास आत घ्या आणि सोडा. चेहऱ्याचे स्नायू आणि मेंदूला खोल विश्रांती मिळते.',
+          ta: 'புன்னகையுடன் மூச்சை உள்ளிழுத்து, புன்னகையுடன் வெளிவிடுங்கள். முகம் மற்றும் மூளை தளர்வடைகிறது.',
+          ml: 'പുഞ്ചിരിയോടെ ശ്വാസമെടുക്കുക, പുഞ്ചിരിയോടെ വിടുക. മനസ്സിന് ആഴത്തിലുള്ള വിശ്രമം ലഭിക്കുന്നു.',
+        },
+        voice: {
+          en: 'Breathe in with a smile, breathe out with a smile. Let the brain deeply relax.',
+          hi: 'मुस्कुराते हुए सांस लें और छोड़ें। मन को शांत होने दें।',
+          mr: 'हसतमुखाने श्वास घ्या आणि सोडा. मेंदूला शांतता मिळू द्या.',
+          ta: 'புன்னகையுடன் சுவாசியுங்கள். மனம் அமைதியடைகிறது.',
+          ml: 'പുഞ്ചിരിയോടെ ശ്വാസമെടുക്കുക. മനസ്സ് വിശ്രമിക്കട്ടെ.',
+        }
+      },
+      {
+        start: 277, end: 313, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: 'अब तीसरे आयाम पर चलते हैं: मन. जिसमें विचार घूमते हैं, जहां भावनाएं उठती हैं. Our body is like the wick of a candle, the mind is a glow all around it.',
+        instruction: {
+          en: 'Step into the third dimension: the mind. Our body is like the wick of a candle; the mind is the luminous glow radiating all around it.',
+          hi: 'तीसरे आयाम पर चलते हैं: मन। शरीर मोमबत्ती की बाती है, तो मन उसके चारों ओर फैला हुआ प्रकाश और ज्योति है।',
+          mr: 'तिसऱ्या मितीकडे वळूया: मन. शरीर वात आहे, तर मन त्याभोवती पसरलेली ज्योत आहे.',
+          ta: 'மூன்றாவது பரிமாணம்: மனம். உடல் மெழுகுவர்த்தி திரி என்றால், மனம் அதைச் சுற்றியுள்ள சுடர்.',
+          ml: 'മൂന്നാമത്തെ തലം: മനസ്സ്. ശരീരം തിരിയാണെങ്കിൽ മനസ്സ് ചുറ്റുമുള്ള പ്രകാശമാണ്.',
+        },
+        voice: {
+          en: 'Our body is like the wick of a candle; the mind is the glow all around it.',
+          hi: 'शरीर बाती है, मन चारों ओर फैला प्रकाश है।',
+          mr: 'शरीर वात आहे, मन भोवतालची ज्योत आहे.',
+          ta: 'உடல் திரி என்றால், மனம் அதைச் சுற்றியுள்ள பிரகாசம்.',
+          ml: 'ശരീരം തിരി, മനസ്സ് അതിൻ്റെ പ്രകാശം.',
+        }
+      },
+      {
+        start: 314, end: 374, breath: { inhale: 4, hold: 2, exhale: 6 },
+        caption: 'शरीर बाती है तो मन ज्योति है. मन एक बादल जैसे शरीर के चारों ओर भीतर बाहर मंडराता है. Our body is inside the mind. As you relax, the mind expands, and your body relaxes.',
+        instruction: {
+          en: 'The body is inside the mind; rather, inside of you. As you relax, the mind expands, and as the mind expands, your body lets go.',
+          hi: 'शरीर मन के भीतर समाया हुआ है। जैसे आप विश्राम करते हैं, मन का विस्तार होता है, और शरीर पूरी तरह शिथिल हो जाता है।',
+          mr: 'शरीर मनात सामावले आहे. जसे तुम्ही शांत होता, मन विस्तारते आणि शरीर अधिक सैल होते.',
+          ta: 'நீங்கள் ஓய்வெடுக்கும்போது மனம் விரிகிறது, உடல் ஆழமாக தளர்கிறது.',
+          ml: 'നിങ്ങൾ വിശ്രമിക്കുമ്പോൾ മനസ്സ് വികസിക്കുന്നു, ശരീരം ശാന്തമാകുന്നു.',
+        },
+        voice: {
+          en: 'As you relax, the mind expands, and as the mind expands, your body relaxes.',
+          hi: 'जैसे आप विश्राम करते हैं, मन फैलता है और शरीर शांत होता है।',
+          mr: 'विश्रांतीने मन विस्तारते आणि शरीर शांत होते.',
+          ta: 'மனம் விரியும்போது, உடல் தளர்கிறது.',
+          ml: 'മനസ്സ് വികസിക്കുമ്പോൾ, ശരീരം വിശ്രമിക്കുന്നു.',
+        }
+      },
+      {
+        start: 375, end: 446, breath: { inhale: 5, hold: 3, exhale: 6 },
+        caption: 'मुस्कुराते मुस्कुराते विश्राम करें. जो भी विचार आ रहे हो मन में, आने दें. अच्छे, बुरे, सभी विचारों को गले लगा लें. सब विचारों को स्वीकार कर लें. You are much bigger than all these thoughts that hover in the mind.',
+        instruction: {
+          en: 'Rest with a gentle smile. Whatever thoughts arise—pleasant or unpleasant—welcome them all. You are infinitely vaster than these fleeting thoughts.',
+          hi: 'मुस्कुराते हुए विश्राम करें। मन में जो भी विचार आएं, उन्हें स्वीकार कर लें। आप इन विचारों से कहीं अधिक विशाल और असीम हैं।',
+          mr: 'हसत विश्रांती घ्या. येणाऱ्या सर्व विचारांना स्वीकार करा. तुम्ही या विचारांपेक्षा कितीतरी पटीने विशाल आहात.',
+          ta: 'புன்னகையுடன் ஓய்வெடுங்கள். எண்ணங்களை விட நீங்கள் மிகவும் பெரியவர்.',
+          ml: 'പുഞ്ചിരിയോടെ വിശ്രമിക്കുക. ചിന്തകളെല്ലാം വരട്ടെ. നിങ്ങൾ ചിന്തകൾക്കും അതീതനാണ്.',
+        },
+        voice: {
+          en: 'Welcome all thoughts with a smile. You are much bigger than any thought.',
+          hi: 'सभी विचारों को मुस्कुराकर स्वीकारें। आप विचारों से बहुत बड़े हैं।',
+          mr: 'सर्व विचार स्वीकारा. तुम्ही विचारांपेक्षा महान आहात.',
+          ta: 'அனைத்து எண்ணங்களையும் ஏற்றுக்கொள்ளுங்கள். நீங்கள் பெரியவர்.',
+          ml: 'ചിന്തകളെ സ്വീകരിക്കുക. നിങ്ങൾ അതിലും വിശാലനാണ്.',
+        }
+      },
+      {
+        start: 447, end: 519, breath: { inhale: 5, hold: 3, exhale: 7 },
+        caption: 'Become aware of the vast sky. विशाल गगन का स्मरण करें. हमारी चेतना आकाश जैसे विशाल है. You are like the blue sky, unaffected, untainted. Repose in yourself. Let go of all tensions.',
+        instruction: {
+          en: 'Contemplate the vast sky. Our consciousness is boundless like open space. Unaffected and untainted, let go of all tensions and repose in yourself.',
+          hi: 'विशाल गगन का स्मरण करें। हमारी चेतना आकाश जैसी अनंत है। सब तनाव छोड़ दें और अपने आप में विश्राम करें।',
+          mr: 'अथांग आकाशाचे स्मरण करा. आपली चेतना आकाशासारखी अथांग आहे. सर्व चिंता सोडून स्वतःमध्ये स्थिर व्हा.',
+          ta: 'நீல வானத்தை நினையுங்கள். நம் உணர்வு எல்லையற்றது. அமைதியில் திளையுங்கள்.',
+          ml: 'വിശാലമായ ആകാശം പോലെയാണ് നിങ്ങളുടെ ബോധം. എല്ലാ ഭാരങ്ങളും വിട്ട് വിശ്രമിക്കുക.',
+        },
+        voice: {
+          en: 'You are like the vast blue sky, unaffected and untainted. Repose in yourself.',
+          hi: 'आप नीले आकाश की तरह असीम हैं। अपने आप में विश्राम करें।',
+          mr: 'तुम्ही आकाशासारखे असीम आहात. स्वतःमध्ये शांत व्हा.',
+          ta: 'நீங்கள் வானம் போல எல்லையற்றவர். ஓய்வெடுங்கள்.',
+          ml: 'നിങ്ങൾ ആകാശം പോലെ വിശാലനാണ്. ശാന്തമായിരിക്കുക.',
+        }
+      },
+      {
+        start: 520, end: 556, breath: { inhale: 4, hold: 2, exhale: 6 },
+        caption: 'Any discomfort, any tension you feel anywhere in the body, just let it be. कहीं कोई तनाव लग रही हो, या असुविधा लग रहे, उसको रहने दें. वे अपने आप ठीक हो जाएंगे. आप अपने आप में विश्राम करें.',
+        instruction: {
+          en: 'Any sensation or tension anywhere in the body, simply let it be. It will soften and dissolve on its own. Settle deeply into your true being.',
+          hi: 'शरीर में कहीं कोई तनाव या बेचैनी हो, उसे रहने दें। वह अपने आप शांत हो जाएगी। आप बस विश्राम में बने रहें।',
+          mr: 'शरीरात काही अस्वस्थता असेल तर राहू द्या. ती आपोआप दूर होईल. शांतपणे पडून राहा.',
+          ta: 'உடலில் எங்கு இறுக்கம் இருந்தாலும் இருக்கட்டும். அது தானாக அகலும்.',
+          ml: 'ശരീരത്തിലെ പിരിമുറുക്കങ്ങളെ കാര്യമാക്കാതെ ശാന്തമായി ഇരിക്കുക.',
+        },
+        voice: {
+          en: 'If you feel any tension, just let it be. Rest deeply in your true self.',
+          hi: 'कोई भी तनाव हो, रहने दें। अपने आप में विश्राम करें।',
+          mr: 'तणाव आपोआप दूर होईल. स्वतःमध्ये विश्रांती घ्या.',
+          ta: 'இறுக்கத்தை விட்டுவிடுங்கள். ஓய்வெடுங்கள்.',
+          ml: 'വിഷമങ്ങൾ വിട്ടൊഴിയട്ടെ. വിശ്രമിക്കുക.',
+        }
+      },
+      {
+        start: 557, end: 583, breath: { inhale: 5, hold: 4, exhale: 7 },
+        caption: 'Take another deep breath in, breathe out. ॐ शान्तिः शान्तिः शान्तिः (Om Shanti, Shanti, Shantihi).',
+        instruction: {
+          en: 'Take another deep breath in, and gently exhale... Om Shanti, Shanti, Shantihi. Feel peace in body, mind, and soul.',
+          hi: 'एक और गहरी सांस अंदर लें, और बाहर छोड़ें... ॐ शान्तिः शान्तिः शान्तिः। मन और आत्मा में शांति अनुभव करें।',
+          mr: 'आणखी एक दीर्घ श्वास घ्या आणि सोडा... ॐ शान्तिः शान्तिः शान्तिः. मनात आणि देहात शांतता अनुभवा.',
+          ta: 'ஆழமாக மூச்செடுத்து விடுங்கள்... ஓம் சாந்தி, சாந்தி, சாந்திஹி.',
+          ml: 'ദീർഘശ്വാസമെടുത്ത് വിടുക... ഓം ശാന്തി, ശാന്തി, ശാന്തിഹി.',
+        },
+        voice: {
+          en: 'Take another deep breath in, and breathe out. Om Shanti, Shanti, Shantihi.',
+          hi: 'एक और गहरी सांस लें और छोड़ें... ॐ शान्तिः शान्तिः शान्तिः।',
+          mr: 'श्वास घ्या आणि सोडा... ॐ शान्तिः शान्तिः शान्तिः.',
+          ta: 'ஓம் சாந்தி, சாந்தி, சாந்திஹி.',
+          ml: 'ഓം ശാന്തി, ശാന്തി, ശാന്തിഹി.',
+        }
+      },
+      {
+        start: 584, end: 628, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: 'धीरे से शरीर और परिसर के प्रति सजग हो जाएं. मुस्कुराते मुस्कुराते एक और गहरी सांस लें, और धीरे धीरे सांस छोड़ें. और आंखें खोल सकते हो. Let us open our eyes, slowly and gently.',
+        instruction: {
+          en: 'Gently become aware of your body and surroundings. With a peaceful smile, take a deep breath, exhale softly, and open your eyes.',
+          hi: 'धीरे से अपने शरीर और आसपास के वातावरण के प्रति सजग हों। चेहरे पर मुस्कान लाएं, एक गहरी सांस लें, और धीरे से आंखें खोल लें।',
+          mr: 'हळूच शरीर आणि परिसराची जाणीव ठेवा. हसतमुखाने दीर्घ श्वास घ्या, हळूच सोडा आणि डोळे उघडा.',
+          ta: 'மெதுவாக உடலையும் சூழலையும் உணருங்கள். புன்னகையுடன் கண்களைத் திறக்கவும்.',
+          ml: 'സാവധാനം ശരീരത്തെ അറിയുക. പുഞ്ചിരിയോടെ കണ്ണുകൾ തുറക്കുക.',
+        },
+        voice: {
+          en: 'Slowly become aware of your body and space. Gently open your eyes feeling refreshed.',
+          hi: 'शरीर के प्रति सजग हों। चेहरे पर मुस्कान के साथ आंखें खोलें।',
+          mr: 'शरीराची जाणीव ठेवा. हसतमुखाने डोळे उघडा.',
+          ta: 'மெதுவாக கண்களைத் திறந்து புத்துணர்ச்சி பெறுங்கள்.',
+          ml: 'സാവധാനം കണ്ണുകൾ തുറന്ന് പുതിയ ഉണർവ് നേടുക.',
+        }
+      }
+    ]
+  },
+  {
+    id: 'choa_kok_sui_27min',
+    title: 'Daily 30-Min Mind Refreshing · Master Choa Kok Sui',
+    guide: 'Grand Master Choa Kok Sui',
+    category: 'Energy & Healing',
+    icon: '✨',
+    color: '#ea580c',
+    duration: 1598,
+    difficulty: 'All levels',
+    defaultAmbient: 'none',
+    audioUrl: '/audio/meditations/choa_kok_sui_27min.mp3',
+    artworkUrl: '/images/meditation-master.png',
+    hasMasterAudio: true,
+    moodMatch: ['sadness', 'fear', 'anger', 'neutral', 'joy'],
+    description: "Grand Master Choa Kok Sui's extremely powerful Twin Hearts Meditation for deep peace, illumination, blessing the Earth, and daily mind rejuvenation.",
+    whyGeneric: "Daily 30-min mind refreshing with Grand Master Choa Kok Sui to activate Heart and Crown chakras, release stress, and experience profound stillness.",
+    phases: [
+      {
+        start: 0, end: 90, breath: { inhale: 4, hold: 2, exhale: 4 },
+        caption: "This is Master Choa Kok Sui. आपण गुरुदेव मास्टर चोआ कोक सुई आहात. Let us invoke for divine blessing. To the supreme God, my spiritual teacher, all the spiritual teachers, Holy masters, all the saints, Holy angels, spiritual helpers, and all the great ones: We humbly invoke for divine guidance, divine love, illumination, divine oneness, divine bliss, help and protection. We thank you in full faith.",
+        instruction: {
+          en: "Sit comfortably with an erect spine. Let us humbly invoke divine blessings, love, illumination, and divine oneness with full faith.",
+          hi: "रीढ़ सीधी करके आराम से बैठें। पूरे विश्वास के साथ दिव्य आशीर्वाद, प्रेम, प्रकाश और एकात्मता का आह्वान करें।",
+          mr: "पाठीचा कणा सरळ ठेवून शांत बसा. पूर्ण श्रद्धेने दिव्य मार्गदर्शन, प्रेम, ज्ञानप्रकाश आणि दिव्य एकात्मतेसाठी प्रार्थना करूया.",
+          ta: "முதுகெலும்பை நேராக வைத்து அமருங்கள். முழு நம்பிக்கையுடன் தெய்வீக வழிகாட்டுதல், அன்பு மற்றும் அமைதிக்காக பிரார்த்திப்போம்.",
+          ml: "നട്ടെല്ല് നേരെയാക്കി ഇരിക്കുക. പൂർണ്ണ വിശ്വാസത്തോടെ ദൈവിക അനുഗ്രഹം, സ്നേഹം, വെളിച്ചം എന്നിവയ്ക്കായി പ്രാർത്ഥിക്കുക.",
+        },
+        voice: {
+          en: "Sit comfortably with your spine erect. Invoke divine blessings, divine love, and illumination in full faith.",
+          hi: "आराम से बैठें और रीढ़ सीधी रखें। पूर्ण विश्वास के साथ दिव्य प्रकाश और प्रेम का आह्वान करें।",
+          mr: "कणा सरळ ठेवून शांत बसा. पूर्ण श्रद्धेने दिव्य मार्गदर्शन आणि प्रेमाचे आवाहन करा.",
+          ta: "நேராக அமருங்கள். தெய்வீக ஆசிகளை முழு நம்பிக்கையோடு நாடுங்கள்.",
+          ml: "നേരെയിരിക്കുക. പൂർണ്ണ വിശ്വാസത്തോടെ ദൈവാനുഗ്രഹം തേടുക.",
+        }
+      },
+      {
+        start: 91, end: 125, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: "Connect your tongue to your palate. आपली जीभ आपल्या टाळ्याला लावा. Recall a happy event. Take your time. Re-experience the exquisite feelings of sweetness, of tenderness, and of love.",
+        instruction: {
+          en: "Connect your tongue to the roof of your mouth (palate). Recall a happy event and re-experience the feelings of sweetness, tenderness, and love.",
+          hi: "अपनी जीभ को तालू से लगाएं। किसी सुखद घटना को याद करें और मधुरता, कोमलता और प्रेम का पुनः अनुभव करें।",
+          mr: "आपली जीभ टाळ्याला लावा. एक सुखद आनंदाचा क्षण आठवा, आणि त्या गोडवा, कोमलता आणि प्रेमाचा पुन्हा अनुभव घ्या.",
+          ta: "நாக்கின் நுனியை மேல் அண்ணத்தில் வைக்கவும். மகிழ்ச்சியான நினைவை எண்ணி அதன் இனிமையை உணருங்கள்.",
+          ml: "നാക്ക് മേൽത്താടിയിൽ തൊടുക. ഒരു സന്തോഷകരമായ നിമിഷം ഓർത്തെടുത്ത് ആ സ്നേഹം വീണ്ടും അനുഭവിക്കുക.",
+        },
+        voice: {
+          en: "Connect your tongue to your palate. Recall a happy event and re-experience feelings of sweetness and love.",
+          hi: "जीभ को तालू से लगाएं। किसी सुखद पल को याद कर प्रेम और मधुरता का अनुभव करें।",
+          mr: "जीभ टाळ्याला लावा. एक सुखद क्षण आठवून प्रेमाचा गोडवा अनुभवा.",
+          ta: "நாக்கை அண்ணத்தில் தொட்டு மகிழ்ச்சியை உணருங்கள்.",
+          ml: "നാക്ക് മേൽത്താടിയിൽ വെച്ച് സ്നേഹം അനുഭവിക്കുക.",
+        }
+      },
+      {
+        start: 126, end: 205, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: "You are smiling. You are filled with love and happiness. Very gently and lovingly smile at your heart center. Your heart center is a being of love. Say words of love and sweetness to your heart. Can you feel your heart center responding with love, with joy and bliss?",
+        instruction: {
+          en: "Smile gently and lovingly at your heart center. Speak words of sweetness and love to your heart. Feel it blossoming with joy and bliss.",
+          hi: "अपने हृदय केंद्र पर धीरे और प्यार से मुस्कुराएं। अपने दिल से प्रेम और मिठास के शब्द कहें और आनंद का अनुभव करें।",
+          mr: "आपल्या हृदय केंद्रावर अत्यंत हळुवारपणे स्मितहास्य करा. हृदयाशी प्रेमाचे शब्द बोला आणि ते प्रेम, आनंद व हर्षाने प्रतिसाद देत असल्याचे अनुभवा.",
+          ta: "உங்கள் இதய மையத்தை நோக்கி மென்மையாக புன்னகையுங்கள். இதயம் அன்பாலும் மகிழ்ச்சியாலும் மலர்வதை உணருங்கள்.",
+          ml: "ഹൃദയ കേന്ദ്രത്തിലേക്ക് പുഞ്ചിരിക്കുക. ഹൃദയത്തോട് സ്നേഹത്തോടെ സംസാരിച്ച് ദിവ്യാനന്ദം അനുഭവിക്കുക.",
+        },
+        voice: {
+          en: "Smile gently at your heart center. Say words of love to your heart, feeling it respond with joy.",
+          hi: "हृदय पर मुस्कुराएं। अपने दिल से प्यार के शब्द कहें और उसे आनंद से भरते देखें।",
+          mr: "हृदयावर प्रेमाने स्मितहास्य करा. प्रेमाचे शब्द बोलून त्याचा आनंद अनुभवा.",
+          ta: "இதயத்தை நோக்கி புன்னகைத்து அன்பு செலுத்துங்கள்.",
+          ml: "ഹൃദയത്തിലേക്ക് പുഞ്ചിരിച്ച് സ്നേഹം പകരുക.",
+        }
+      },
+      {
+        start: 206, end: 286, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: "Recall another happy event. Smile at your crown center. Your crown center is a being of divine love. Say words of love to this being of divine love. Lovingly and gently smile at your crown center. Can you feel your crown center responding with divine love and divine sweetness?",
+        instruction: {
+          en: "Recall another happy moment. Smile at your crown center atop your head. Feel your crown responding with divine sweetness and divine love.",
+          hi: "एक और सुखद पल याद करें। सिर के शीर्ष (क्राउन केंद्र) पर मुस्कुराएं और महसूस करें कि वह दिव्य प्रेम से भर रहा है।",
+          mr: "दुसरी सुखद घटना आठवा. डोक्यावरील ब्रह्म (क्राउन) केंद्रावर प्रेमाने स्मितहास्य करा. दिव्य प्रेम आणि मधुरतेचा प्रतिसाद अनुभवा.",
+          ta: "மற்றொரு மகிழ்ச்சியான தருணத்தை நினையுங்கள். தலை உச்சி மையத்தை நோக்கி புன்னகையித்து தெய்வீக அன்பை உணருங்கள்.",
+          ml: "മറ്റൊരു സന്തുഷ്ട നിമിഷം ഓർക്കുക. ശിരസ്സിന്റെ മുകളിലുള്ള ക്രൗൺ കേന്ദ്രത്തിലേക്ക് പുഞ്ചിരിച്ച് ദിവ്യസ്നേഹം അറിയുക.",
+        },
+        voice: {
+          en: "Smile at your crown center. Feel it responding with boundless divine love and sweetness.",
+          hi: "सिर के शीर्ष पर मुस्कुराएं। उसे असीम दिव्य प्रेम और मधुरता से खिलते महसूस करें।",
+          mr: "माथ्यावरील ब्रह्म केंद्रावर स्मितहास्य करा. दिव्य प्रेमाचा प्रतिसाद अनुभवा.",
+          ta: "தலை உச்சியில் புன்னகைத்து தெய்வீக அன்பை உணருங்கள்.",
+          ml: "ക്രൗൺ കേന്ദ്രത്തിലേക്ക് പുഞ്ചിരിച്ച് ദിവ്യസ്നേഹം അറിയുക.",
+        }
+      },
+      {
+        start: 287, end: 419, breath: { inhale: 4, hold: 2, exhale: 4 },
+        caption: "We are going to bless the Earth with loving kindness using the prayer of Saint Francis of Assisi. Raise your hands with palms facing outward. Imagine the Earth in front of you, the size of a small ball. Be aware of your heart and silently repeat after me: Lord, make me an instrument of your peace.",
+        instruction: {
+          en: "Raise your hands facing outward. Envision Earth as a small ball before you. Pray: Lord, make me an instrument of your peace. Radiate peace to the Earth.",
+          hi: "हाथ ऊपर उठाएं, हथेलियां बाहर की ओर। पृथ्वी को एक छोटी गेंद के रूप में देखें। कहें: हे ईश्वर, मुझे अपनी शांति का माध्यम बना। शांति भेजें।",
+          mr: "हात छातीसमोर वर उचला. पृथ्वीला लहान चेंडूसारखी समोर कल्पून म्हणा: हे ईश्वरा, मला तुझ्या शांततेचे माध्यम बनू दे. पृथ्वीला शांतीचा आशीर्वाद द्या.",
+          ta: "கைகளை உயர்த்தி பூமியை ஒரு சிறிய பந்தாக கற்பனை செய்யுங்கள். இறைவனின் அமைதிக்கான கருவியாக மாறி அமைதியை பூமியெங்கும் பரப்புங்கள்.",
+          ml: "കൈകൾ ഉയർത്തി ഭൂമിയെ ഒരു പന്തായി കാണുക. ദൈവത്തിന്റെ സമാധാനത്തിന്റെ ഉപകരണമായി മാറി ഭൂമിയിലേക്ക് സമാധാനം ചൊരിയുക.",
+        },
+        voice: {
+          en: "Raise your hands facing outward. Envision Earth before you and radiate divine peace to all beings.",
+          hi: "हाथ ऊपर उठाएं और पृथ्वी को अपने सामने देखकर संपूर्ण सृष्टि को शांति का आशीर्वाद दें।",
+          mr: "हात वर उचला आणि पृथ्वीला दिव्य शांततेचा आशीर्वाद द्या.",
+          ta: "கைகளை உயர்த்தி பூமிக்கு அமைதியை ஆசீர்வதியுங்கள்.",
+          ml: "കൈകൾ ഉയർത്തി ഭൂമിയിലേക്ക് സമാധാനം ആശംസിക്കുക.",
+        }
+      },
+      {
+        start: 420, end: 493, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: "Where there is hatred, let me sow love. जेथे द्वेष आहे, तेथे मला प्रेमाचे बीज रुजवू दे. Feel the love flowing from your heart to your arms and hands, going to the small Earth in front of you. Bless the Earth with peace and with love.",
+        instruction: {
+          en: "Where there is hatred, sow love. Feel divine love flowing from your heart and hands into the Earth, soothing and healing all hearts.",
+          hi: "जहाँ नफरत है, वहाँ प्यार बोएं। अपने दिल और हाथों से पृथ्वी में दिव्य प्रेम बहने दें, सभी को शांत और ठीक करें।",
+          mr: "जेथे द्वेष आहे, तेथे प्रेमाचे बीज रुजवू द्या. आपल्या हृदयातून वाहणारे प्रेम हातातून पृथ्वीकडे जात असल्याचे अनुभवा.",
+          ta: "வெறுப்பு உள்ள இடத்தில் அன்பை விதைக்கவும். உங்கள் இதயத்திலிருந்து பிரவாகிக்கும் தெய்வீக அன்பை பூமிக்கு அனுப்புங்கள்.",
+          ml: "വിദ്വേഷമുള്ളിടത്ത് സ്നേഹം വിതയ്ക്കുക. നിങ്ങളുടെ ഹൃദയത്തിൽ നിന്നും കൈകളിൽ നിന്നും സ്നേഹം ഭൂമിയിലേക്ക് ഒഴുകട്ടെ.",
+        },
+        voice: {
+          en: "Where there is hatred, sow love. Let unconditional love flow from your hands to the Earth.",
+          hi: "नफरत की जगह प्यार बोएं। अपने हाथों से पूरी पृथ्वी पर निस्वार्थ प्रेम की वर्षा करें।",
+          mr: "द्वेषाच्या जागी प्रेम रुजवा. हातातून पृथ्वीवर प्रेमाचा वर्षाव होऊ द्या.",
+          ta: "வெறுப்புக்கு பதிலாக அன்பை பொழியுங்கள்.",
+          ml: "സ്നേഹം കൊണ്ട് ലോകത്തെ അനുഗ്രഹിക്കുക.",
+        }
+      },
+      {
+        start: 494, end: 537, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: "Where there is injury, pardon. जेथे दुखापत, तेथे क्षमा. Allow yourself to be a channel for divine forgiveness, divine reconciliation. Bless the Earth with forgiveness, harmony, and peace.",
+        instruction: {
+          en: "Where there is injury, pardon. Radiate divine forgiveness and reconciliation. Let there be understanding, harmony, and peace across Earth.",
+          hi: "जहाँ चोट है, वहाँ क्षमा हो। दिव्य क्षमा और मेल-मिलाप का माध्यम बनें। पूरी दुनिया में सद्भाव और शांति फैलने दें।",
+          mr: "जेथे दुखापत, तेथे क्षमा. स्वतःला दिव्य क्षमा आणि सुसंगतीचे माध्यम बनवा. सर्वत्र समंजसपणा, सुसंगती व शांतता पसरू द्या.",
+          ta: "காயம் உள்ள இடத்தில் மன்னிப்பை பரப்புங்கள். உலகெங்கும் நல்லிணக்கமும் சமாதானமும் நிலவட்டும்.",
+          ml: "മുറിവേറ്റ ഇടങ്ങളിൽ ക്ഷമ പകരുക. ദൈവത്തിന്റെ കാരുണ്യവും ഐക്യവും ഭൂമിയിലെങ്ങും നിറയട്ടെ.",
+        },
+        voice: {
+          en: "Where there is injury, pardon. Bless the Earth with forgiveness and harmony.",
+          hi: "जहाँ चोट है क्षमा लाएं। दुनिया को क्षमा और सद्भाव का आशीर्वाद दें।",
+          mr: "दुखापतीच्या जागी क्षमा आणा. पृथ्वीला समंजसपणाचा आशीर्वाद द्या.",
+          ta: "மன்னிப்பையும் நல்லிணக்கத்தையும் ஆசீர்வதியுங்கள்.",
+          ml: "ക്ഷമയും ഐക്യവും ലോകത്തിന് ആശംസിക്കുക.",
+        }
+      },
+      {
+        start: 538, end: 615, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: "Where there is despair, hope; doubt, faith. जेथे नैराश्य, तेथे आशा; संशय, तेथे विश्वास. Bless people having a difficult time with hope and faith. Silently tell them: You can make it. Bless them with divine strength.",
+        instruction: {
+          en: "Where there is despair, bring hope; where doubt, faith. Bless everyone going through hardship: 'You can make it.' Send them divine strength.",
+          hi: "जहाँ निराशा है, आशा लाएं; जहाँ संशय है, विश्वास। कठिन समय से गुजर रहे लोगों को आशीर्वाद दें: 'आप कर सकते हैं।' दिव्य शक्ति भेजें।",
+          mr: "जेथे नैराश्य तेथे आशा, संशयाच्या जागी विश्वास आणा. संकटात असलेल्या लोकांना सांगा: 'तुम्ही हे करू शकता.' त्यांना दिव्य शक्ती द्या.",
+          ta: "நம்பிக்கையற்ற இடத்தில் நம்பிக்கையை கொண்டு வாருங்கள். கஷ்டத்தில் உள்ளோருக்கு மன வலிமையையும் ஊக்கத்தையும் ஆசீர்வதியுங்கள்.",
+          ml: "നിരാശയുള്ളിടത്ത് പ്രത്യാശയും സംശയമുള്ളിടത്ത് വിശ്വാസവും പകരുക. കഷ്ടപ്പെടുന്നവർക്ക് ദൈവിക ശക്തി ആശംസിക്കുക.",
+        },
+        voice: {
+          en: "Bring hope and faith to those in despair. Silently tell them: You can make it.",
+          hi: "निराश लोगों को आशा और विश्वास दें। मन में कहें: आप कर सकते हैं।",
+          mr: "संकटात असलेल्यांना सांगा: तुम्ही हे करू शकता. त्यांना आशा द्या.",
+          ta: "நம்பிக்கையிழந்து தவிப்போருக்கு தைரியத்தையும் நம்பிக்கையையும் கொடுங்கள்.",
+          ml: "വിഷമിക്കുന്നവർക്ക് പ്രത്യാശയും ആത്മവിശ്വാസവും പകരുക.",
+        }
+      },
+      {
+        start: 616, end: 675, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: "Where there is darkness, light; sadness, joy. जेथे अंधार आहे, तेथे प्रकाश; दुःख, तेथे आनंद. Bless the entire Earth with light and joy. Especially people who are sad, in pain, or depressed. Fill them with light and joy.",
+        instruction: {
+          en: "Where darkness, shine light; where sadness, bring joy. Pour uplifting light and joy upon those who are sad, hurting, or depressed.",
+          hi: "जहाँ अंधकार है प्रकाश फैलाएं, जहाँ उदासी है खुशियां भरें। दुखी और निराश लोगों को दिव्य आनंद और प्रकाश से भर दें।",
+          mr: "जेथे अंधार तेथे प्रकाश, जिथे दुःख तेथे आनंद आणा. संपूर्ण पृथ्वीवरील दुःखी व निराश लोकांना प्रकाश आणि आनंदाने भरून टाका.",
+          ta: "இருளில் ஒளியையும், துக்கத்தில் மகிழ்ச்சியையும் பரப்புங்கள். துயரத்தில் உள்ள மக்களை மகிழ்ச்சியால் நிரப்புங்கள்.",
+          ml: "ഇരുട്ടിൽ പ്രകാശവും ദുഃഖത്തിൽ ആനന്ദവും പകരുക. വേദനയനുഭവിക്കുന്നവരെ ദിവ്യപ്രകാശത്താൽ നിറയ്ക്കുക.",
+        },
+        voice: {
+          en: "Radiate light into darkness and joy into sadness. Fill hurting souls with divine joy.",
+          hi: "अंधकार में प्रकाश और दुख में आनंद लाएं। दुखी आत्माओं को दिव्य ज्योति से भरें।",
+          mr: "अंधारात प्रकाश आणि दुःखात आनंद भरा. प्रत्येकाला शांती लाभू द्या.",
+          ta: "இருளை நீக்கி ஒளியையும், துயரத்தை போக்கி மகிழ்ச்சியையும் பரப்புங்கள்.",
+          ml: "പ്രകാശവും ആനന്ദവും കൊണ്ട് എല്ലാവരെയും അനുഗ്രഹിക്കുക.",
+        }
+      },
+      {
+        start: 676, end: 790, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: "Be aware of your crown. From the heart of God, let the entire Earth be blessed with loving-kindness, great joy, happiness, understanding, harmony, and divine peace, with goodwill and the will to do good.",
+        instruction: {
+          en: "Focus on your crown center. From the heart of God, bless Earth with great joy, harmony, and the goodwill to do real good in the world.",
+          hi: "अपने क्राउन केंद्र पर ध्यान दें। ईश्वर के हृदय से पूरी पृथ्वी को दिव्य आनंद, सद्भाव और भलाई करने की प्रेरणा से आशीर्वाद दें।",
+          mr: "ब्रह्म केंद्रावर लक्ष केंद्रित करा. ईश्वराच्या हृदयातून संपूर्ण पृथ्वीला विपुल आनंद, सद्भावना आणि सत्कार्य करण्याच्या संकल्पाचा आशीर्वाद द्या.",
+          ta: "தலை உச்சியில் கவனம் செலுத்துங்கள். பூமியிலுள்ள அனைவரும் நன்மை செய்யும் நல்லெண்ணமும் ஆனந்தமும் பெற ஆசீர்வதியுங்கள்.",
+          ml: "ക്രൗൺ കേന്ദ്രത്തിൽ ശ്രദ്ധിക്കുക. ലോകം മുഴുവൻ നന്മയും സ്നേഹവും സമാധാനവും നിറയാൻ ആത്മാർത്ഥമായി അനുഗ്രഹിക്കുക.",
+        },
+        voice: {
+          en: "Be aware of your crown. Bless Earth with great joy, harmony, and goodwill to do good.",
+          hi: "क्राउन केंद्र से पूरी दुनिया को आनंद, सद्भाव और भलाई का आशीर्वाद दें।",
+          mr: "ब्रह्म केंद्रातून संपूर्ण विश्वाला सद्भावना आणि शांतीचा आशीर्वाद द्या.",
+          ta: "உலக மக்கள் அனைவரும் நன்மை செய்ய ஆசீர்வதியுங்கள்.",
+          ml: "എല്ലാവരിലും നന്മയും സമാധാനവും നിറയട്ടെ എന്ന് പ്രാർത്ഥിക്കുക.",
+        }
+      },
+      {
+        start: 791, end: 898, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: "Be aware of your heart and crown simultaneously. From the heart of God, let every person, every being be blessed with divine love, sweetness, joy, warmth, inner healing, divine bliss, and divine oneness with all.",
+        instruction: {
+          en: "Be aware of both heart and crown simultaneously. Project radiant golden light from your hands, bathing every soul in healing, warmth, and divine bliss.",
+          hi: "हृदय और क्राउन दोनों पर एक साथ ध्यान दें। हाथों से स्वर्णिम प्रकाश प्रवाहित कर पूरी पृथ्वी को आरोग्य, प्रेम और दिव्य एकता से भरें।",
+          mr: "हृदय आणि ब्रह्म केंद्रावर एकाच वेळी जागृत रहा. हातातून निघणारा सोनेरी प्रकाश संपूर्ण पृथ्वीला आंतरिक उपचार आणि दिव्य प्रेमाने भरत असल्याचे अनुभवा.",
+          ta: "இதயத்தையும் தலை உச்சியையும் ஒரே நேரத்தில் உணருங்கள். கைகளில் இருந்து வெளிப்படும் தங்க ஒளியால் பூமி முழுவதையும் குணப்படுத்துங்கள்.",
+          ml: "ഹൃദയത്തിലും ക്രൗണിലും ഒരേസമയം ശ്രദ്ധ കേന്ദ്രീകരിക്കുക. കൈകളിൽ നിന്ന് പുറപ്പെടുന്ന സ്വർണ്ണപ്രകാശത്താൽ ഭൂമിയെ സുഖപ്പെടുത്തുക.",
+        },
+        voice: {
+          en: "Connect heart and crown. Channel golden light to bring inner healing and divine oneness to all.",
+          hi: "दिल और क्राउन को जोड़ें। स्वर्णिम प्रकाश से सबको आंतरिक आरोग्य और शांति दें।",
+          mr: "हृदय व ब्रह्म केंद्र जोडून सोनेरी प्रकाशाने जगाला निरोगी बनवा.",
+          ta: "தங்க ஒளியால் உலகிற்கு உள் அமைதியை வழங்குங்கள்.",
+          ml: "സ്വർണ്ണ പ്രകാശത്താൽ എല്ലാവരെയും രോഗമുക്തരും ശാന്തരുമാക്കുക.",
+        }
+      },
+      {
+        start: 899, end: 1042, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: "Gently put your hands down. Imagine a brilliant star or brilliant light on your crown. Silently chant the sacred mantra OM. Lovingly meditate on the brilliant star, and meditate on the interval of stillness between the OMs. And let go.",
+        instruction: {
+          en: "Rest your hands down. Visualize a brilliant star of white light upon your crown. Chant the sacred OM and meditate on the profound stillness between the OMs.",
+          hi: "हाथ नीचे रखें। क्राउन पर एक चमकते तारे की कल्पना करें। मन में ॐ का जप करें और दो ॐ के बीच की नीरव शांति में लीन हो जाएं।",
+          mr: "हात हळूच खाली ठेवा. माथ्यावर तेजस्वी ताऱ्याची कल्पना करा. ॐ मंत्राचे उच्चारण करा आणि दोन ॐ मधील अथांग शांततेत स्वतःला विलीन करा.",
+          ta: "கைகளை கீழே வைக்கவும். தலை உச்சியில் ஒரு பிரகாசமான நட்சத்திரத்தை கற்பனை செய்து 'ஓம்' மந்திரத்தின் இடைவெளி அமைதியில் லையுங்கள்.",
+          ml: "കൈകൾ താഴെ വെക്കുക. തലയ്ക്ക് മുകളിൽ ഒരു തിളങ്ങുന്ന നക്ഷത്രം കണ്ട് 'ഓം' മന്ത്രത്തിന്റെ നിശബ്ദതയിൽ ലയിക്കുക.",
+        },
+        voice: {
+          en: "Rest your hands. Meditate on the brilliant star on your crown and the stillness between the OMs.",
+          hi: "हाथ नीचे रखें। सिर पर चमकते तारे और ॐ के बीच की नीरव शांति पर ध्यान दें।",
+          mr: "हात खाली ठेवा. तेजस्वी ताऱ्यावर आणि दोन ॐ मधील शांततेवर ध्यान धरा.",
+          ta: "நட்சத்திரத்தின் பிரகாசத்திலும் 'ஓம்' மந்திரத்தின் அமைதியிலும் லையுங்கள்.",
+          ml: "തിളങ്ങുന്ന നക്ഷത്രത്തിലും 'ഓം' മന്ത്രത്തിന്റെ നിശബ്ദതയിലും ശ്രദ്ധിക്കുക.",
+        }
+      },
+      {
+        start: 1043, end: 1159, breath: { inhale: 5, hold: 2, exhale: 6 },
+        caption: "OM... OM... OM... Stillness... Pure Consciousness... Deep Transcendence... Let go into the infinite.",
+        instruction: {
+          en: "Chanting of OM. Drift effortlessly into the vast stillness and pure divine light between the vibrations. Let go completely.",
+          hi: "ॐ की गूंज... दो ॐ के बीच की अनंत शांति और प्रकाश में पूरी तरह समर्पण करें और खो जाएं।",
+          mr: "ॐ चा नाद... दोन ॐ मधील अलौकिक शांततेमध्ये स्वतःला मुक्त करा आणि आत्मिक प्रकाशात विलीन व्हा.",
+          ta: "'ஓம்' அதிர்வு... எல்லை இல்லாத அமைதியிலும் தெய்வீக ஒளியிலும் உங்களை முழுமையாக ஆழ்த்துங்கள்.",
+          ml: "'ഓം' ധ്വനി... അനന്തമായ നിശബ്ദതയിലേക്കും പ്രകാശത്തിലേക്കും പൂർണ്ണമായി സ്വയം സമർപ്പിക്കുക.",
+        },
+        voice: {
+          en: "Drift into the stillness between the OMs. Let go into pure peace.",
+          hi: "ॐ के बीच के मौन में विलीन हो जाएं। परम शांति में समर्पण करें।",
+          mr: "ॐ मधील अथांग शांततेत विलीन व्हा. स्वतःला मुक्त करा.",
+          ta: "மந்திர அமைதியில் உங்களை கரைத்துக்கொள்ளுங்கள்.",
+          ml: "നിശബ്ദതയിൽ സ്വയം ലയിച്ചു ചേരുക.",
+        }
+      },
+      {
+        start: 1160, end: 1332, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: "Continue with your meditation. Relax and let go. (Deep Stillness & Tranquil Healing Music).",
+        instruction: {
+          en: "Deep silence and stillness. Rest in the timeless ocean of peace, recharging your physical, mental, and energy bodies.",
+          hi: "गहरा मौन और विश्राम। परम शांति के इस महासागर में बने रहें और अपनी ऊर्जा को पुनः जागृत करें।",
+          mr: "अथांग शांतता आणि विश्रांती. मनाला आणि शरीराला ताजेतवाने करणाऱ्या या दिव्य मौनात पूर्णपणे विश्राम करा.",
+          ta: "ஆழ்ந்த அமைதியும் தியானமும். அமைதியின் கடலில் மூழ்கி உங்கள் உடலையும் மனதையும் புத்துணர்ச்சியூட்டுங்கள்.",
+          ml: "ആഴത്തിലുള്ള നിശബ്ദത. പരമ ശാന്തിയിൽ വിശ്രമിച്ച് മനസ്സും ശരീരവും നവീകരിക്കുക.",
+        },
+        voice: {
+          en: "Deep stillness. Rest in the quiet ocean of peace and recharge your mind.",
+          hi: "गहन शांति। इस मौन में विश्राम करें और अपने मन को तरोताजा करें।",
+          mr: "खोल शांतता. या मौनात मन आणि शरीराला विश्रांती द्या.",
+          ta: "ஆழ்ந்த அமைதியில் ஓய்வெடுத்து மனதை புத்துணர்ச்சியாக்குங்கள்.",
+          ml: "നിശബ്ദതയിൽ വിശ്രമിച്ച് മനസ്സിന് പുതുജീവൻ നൽകുക.",
+        }
+      },
+      {
+        start: 1333, end: 1453, breath: { inhale: 4, hold: 2, exhale: 4 },
+        caption: "Very gently return to your body now. Raise your hands on chest level with palms outward. We are going to release excess energy. Let the entire Earth be blessed with divine light, love, power, peace, good health, and prosperity.",
+        instruction: {
+          en: "Gently return awareness to your body. Raise hands to release excess energy, blessing Earth with peace, health, abundance, and prosperity.",
+          hi: "धीरे-धीरे अपने शरीर में वापस आएं। हाथ उठाकर अतिरिक्त ऊर्जा को मुक्त करें और पृथ्वी को स्वास्थ्य और समृद्धि का आशीर्वाद दें।",
+          mr: "हळूच शरीराच्या जाणीवेकडे परत या. हाताचे तळवे पुढे करून अतिरिक्त ऊर्जा मुक्त करा आणि पृथ्वीला आरोग्य व समृद्धीचा आशीर्वाद द्या.",
+          ta: "மெதுவாக உடலுக்குத் திரும்புங்கள். கைகளை உயர்த்தி கூடுதல் சக்தியை பூமிக்கு ஆசீர்வாதமாக வழங்கி ஆரோக்கியமும் வளமும் அளியுங்கள்.",
+          ml: "സാവധാനം ശരീരത്തിലേക്ക് മടങ്ങുക. അധിക ഊർജ്ജം ഭൂമിയിലേക്ക് വിട്ട് ലോകത്തിന് സമൃദ്ധിയും ആരോഗ്യവും ആശംസിക്കുക.",
+        },
+        voice: {
+          en: "Return awareness to your body. Raise hands and release excess energy, blessing the Earth.",
+          hi: "शरीर की चेतना में लौटें। हाथ उठाकर अतिरिक्त ऊर्जा को पृथ्वी के कल्याण के लिए समर्पित करें।",
+          mr: "शरीराच्या जाणीवेत या. हात उंचावून अतिरिक्त ऊर्जा मुक्त करा.",
+          ta: "உடலுக்கு திரும்பி கூடுதல் சக்தியை பூமிக்கு ஆசீர்வதியுங்கள்.",
+          ml: "ശരീരത്തിലേക്ക് മടങ്ങിയെത്തി അധിക ഊർജ്ജം ഭൂമിയിലേക്ക് വിടുക.",
+        }
+      },
+      {
+        start: 1454, end: 1598, breath: { inhale: 4, hold: 2, exhale: 5 },
+        caption: "Gently be aware of the base of your spine and feet. Send light 10 feet down into the Earth. Bless Mother Earth to be regenerated. To the supreme God, my spiritual teacher, holy masters, and angels: thank you for the divine blessings. Gently open your eyes with a big smile.",
+        instruction: {
+          en: "Ground through your feet and spine into Mother Earth. Offer heartfelt thanks for the divine blessings. Gently open your eyes with a radiant smile.",
+          hi: "पैरों और रीढ़ के माध्यम से पृथ्वी में स्थिर हों। दिव्य आशीर्वादों के लिए आभार व्यक्त करें और चेहरे पर मुस्कान के साथ आंखें खोलें।",
+          mr: "पायाच्या तळांतून धरणीमातेत स्थिर व्हा. महान दिव्य आशीर्वादांसाठी कृतज्ञता व्यक्त करा आणि मोठ्या स्मितहास्यासह हळूच डोळे उघडा.",
+          ta: "பாதங்கள் வழியாக பூமியோடு இணையுங்கள். தெய்வீக ஆசிகளுக்கு நன்றி கூறி புன்னகையோடு கண்களைத் திறக்கவும்.",
+          ml: "പാദങ്ങളിലൂടെ ഭൂമിയിലേക്ക് ഊർജ്ജം നൽകി ബന്ധപ്പെടുക. ദൈവിക അനുഗ്രഹങ്ങൾക്ക് നന്ദി പറഞ്ഞ് പുഞ്ചിരിയോടെ കണ്ണുകൾ തുറക്കുക.",
+        },
+        voice: {
+          en: "Ground down into Mother Earth. Give thanks for the divine blessings and gently open your eyes with a smile.",
+          hi: "धरती में स्थिर हों। दिव्य कृपा के लिए धन्यवाद करें और मुस्कुराते हुए आंखें खोलें।",
+          mr: "धरणीमातेप्रती कृतज्ञता व्यक्त करा आणि हसतमुखाने डोळे उघडा.",
+          ta: "பூமியோடு இணைந்து நன்றி கூறி புன்னகையுடன் கண்களை திறக்கவும்.",
+          ml: "ഭൂമിക്ക് നന്ദി പറഞ്ഞ് പുഞ്ചിരിയോടെ കണ്ണുകൾ തുറക്കുക.",
+        }
+      },
+    ]
+  },
+  {
     id: 'stress_relief', title: 'Work Stress Relief', category: 'Stress', icon: '🌿',
     color: '#10b981', duration: 180, difficulty: 'Beginner', defaultAmbient: 'rain',
     moodMatch: ['anger', 'disgust'],
@@ -367,391 +945,7 @@ export const PROGRAMS = [
         }
       },
     ]
-  },
-  {
-    id: 'sleep_winddown', title: 'Evening Sleep Wind-Down', category: 'Sleep', icon: '🌙',
-    color: '#6366f1', duration: 300, difficulty: 'Beginner', defaultAmbient: 'ocean',
-    moodMatch: ['fear'],
-    description: 'Quiet an overactive mind and prepare your body for deep, restorative sleep.',
-    whyGeneric: 'When your mind won\'t quiet down, this gentle session helps you drift toward rest.',
-    phases: [
-      {
-        start: 0, end: 40, breath: { inhale: 4, hold: 3, exhale: 7 },
-        instruction: {
-          en: 'Dim your surroundings. Let your eyes softly close. The day is complete.',
-          hi: 'रोशनी कम करें और आँखें बंद करें। आज का दिन अब पूरा हो चुका है।',
-          mr: 'प्रकाश कमी करा आणि डोळे मिटा. आजचा दिवस पूर्ण झाला आहे.',
-          ta: 'விளக்குகளை குறைத்து கண்களை மூடுங்கள். இன்றைய நாள் முடிந்தது.',
-          ml: 'വെളിച്ചം കുറച്ച് കണ്ണുകൾ അടയ്ക്കുക. ഇന്നത്തെ ദിവസം കഴിഞ്ഞു.',
-        },
-        voice: {
-          en: 'Dim your surroundings. Let your eyes close. The day is complete.',
-          hi: 'आंखें बंद करें। आज का दिन पूरा हो चुका है।',
-          mr: 'डोळे मिटा. आजचा दिवस समाप्त झाला आहे.',
-          ta: 'கண்களை மூடுங்கள். இன்றைய நாள் முடிவடைந்தது.',
-          ml: 'കണ്ണുകൾ അടയ്ക്കുക. ഇന്നത്തെ ദിവസം പൂർത്തിയായി.',
-        }
-      },
-      {
-        start: 40, end: 90, breath: { inhale: 4, hold: 3, exhale: 8 },
-        instruction: {
-          en: 'There is nothing left for you to do. Every task can wait until tomorrow.',
-          hi: 'अब करने के लिए कुछ नहीं बचा है। हर काम कल तक इंतजार कर सकता है।',
-          mr: 'आता काहीही करण्याची गरज नाही. सर्व कामे उद्यापर्यंत थांबू शकतात.',
-          ta: 'இனி செய்வதற்கு எதுவுமில்லை. அனைத்தும் நாளை பார்த்துக் கொள்ளலாம்.',
-          ml: 'ഇനി ഒന്നും ചെയ്യേണ്ടതില്ല. എല്ലാം നാളത്തേക്ക് മാറ്റിവെക്കാം.',
-        },
-        voice: {
-          en: 'There is nothing left to do. Everything can wait.',
-          hi: 'अब सब कुछ छोड़ दें। हर काम कल हो सकता है।',
-          mr: 'सर्व विचार सोडून द्या. सर्व कामे उद्या होतील.',
-          ta: 'அனைத்து வேலைகளையும் தள்ளி வையுங்கள்.',
-          ml: 'എല്ലാം മാറ്റിവെക്കുക. മനസ്സ് ശാന്തമാക്കുക.',
-        }
-      },
-      {
-        start: 90, end: 140, breath: { inhale: 5, hold: 4, exhale: 8 },
-        instruction: {
-          en: 'Take a deep, slow breath in, and let your whole body sink deeper.',
-          hi: 'एक गहरी, धीमी सांस लें और पूरे शरीर को विश्राम में डूबने दें।',
-          mr: 'दीर्घ आणि हळुवार श्वास घ्या आणि शरीर विश्रांतीत सोपवा.',
-          ta: 'ஆழமாக சுவாசித்து உடலை ஆழ்ந்த ஓய்வுக்கு கொண்டு செல்லுங்கள்.',
-          ml: 'ദീർഘമായി ശ്വാസമെടുത്ത് ശരീരത്തെ പൂർണ്ണ വിശ്രമത്തിലേക്ക് വിടുക.',
-        },
-        voice: {
-          en: 'Take a deep slow breath. Let your body sink.',
-          hi: 'धीमी गहरी सांस लें। शरीर को ढीला छोड़ें।',
-          mr: 'हळूच दीर्घ श्वास घ्या. शरीर सैल सोडा.',
-          ta: 'ஆழமாக சுவாசித்து உடலை தளர்த்துங்கள்.',
-          ml: 'പതുക്കെ ശ്വാസമെടുത്ത് ശരീരം അയക്കുക.',
-        }
-      },
-      {
-        start: 140, end: 190, breath: { inhale: 4, hold: 3, exhale: 8 },
-        instruction: {
-          en: 'With every exhale, imagine tension melting away into the night.',
-          hi: 'हर सांस छोड़ने के साथ तनाव को रात के अंधेरे में विलीन होते महसूस करें।',
-          mr: 'प्रत्येक श्वासासोबत तणाव नाहीसा होत असल्याचे अनुभवा.',
-          ta: 'ஒவ்வொரு முறை மூச்சை வெளிவிடும்போதும் அமைதியை உணருங்கள்.',
-          ml: 'ഓരോ തവണ ശ്വാസം പുറത്തുവിടുമ്പോഴും പിരിമുറുക്കം അകലട്ടെ.',
-        },
-        voice: {
-          en: 'With every exhale, tension melts away.',
-          hi: 'सांस के साथ सभी तनाव बाहर निकल रहे हैं।',
-          mr: 'श्वासासोबत सर्व तणाव विरघळून जात आहे.',
-          ta: 'அனைத்து இறுக்கமும் மறைந்து அமைதி நிலவுகிறது.',
-          ml: 'എല്ലാ ടെൻഷനുകളും അകന്നുപോവുന്നു.',
-        }
-      },
-      {
-        start: 190, end: 240, breath: { inhale: 4, hold: 4, exhale: 9 },
-        instruction: {
-          en: 'Your mind is quiet like calm, still water. Completely peaceful.',
-          hi: 'आपका मन शांत पानी की तरह स्थिर और प्रशांत है।',
-          mr: 'तुमचे मन शांत पाण्यासारखे स्थिर आणि निश्चल आहे.',
-          ta: 'உங்கள் மனம் அமைதியான நீரைப் போல சலனமற்று உள்ளது.',
-          ml: 'നിങ്ങളുടെ മനസ്സ് ശാന്തമായ ജലാശയം പോലെ നിശ്ചലമാണ്.',
-        },
-        voice: {
-          en: 'Your mind is quiet like still water.',
-          hi: 'आपका मन शांत झील की तरह स्थिर है।',
-          mr: 'तुमचे मन शांत आणि निश्चल आहे.',
-          ta: 'உங்கள் மனம் அமைதியாக உள்ளது.',
-          ml: 'നിങ്ങളുടെ മനസ്സ് തികച്ചും ശാന്തമാണ്.',
-        }
-      },
-      {
-        start: 240, end: 275, breath: { inhale: 4, hold: 4, exhale: 9 },
-        instruction: {
-          en: 'Surrender to rest. You are safe, comforted, and cared for.',
-          hi: 'विश्राम में लीन हो जाएं। आप पूरी तरह सुरक्षित हैं।',
-          mr: 'विश्रांतीमध्ये लीन व्हा. तुम्ही सुरक्षित आहात.',
-          ta: 'ஓய்வெடுங்கள். நீங்கள் பாதுகாப்பாக இருக்கிறீர்கள்.',
-          ml: 'വിശ്രമിക്കുക. നിങ്ങൾ തികച്ചും സുരക്ഷിതനാണ്.',
-        },
-        voice: {
-          en: 'Surrender to rest. You are safe.',
-          hi: 'विश्राम करें। आप सुरक्षित हैं।',
-          mr: 'विश्रांती घ्या. तुम्ही सुरक्षित आहात.',
-          ta: 'ஆழ்ந்த தூக்கத்திற்கு தயாராகுங்கள்.',
-          ml: 'സുഖമായി വിശ്രമിക്കുക.',
-        }
-      },
-      {
-        start: 275, end: 300, breath: { inhale: 4, hold: 4, exhale: 10 },
-        instruction: {
-          en: 'Drift gently into sweet, restorative sleep...',
-          hi: 'एक मीठी, सुखद और गहरी नींद में खो जाएं...',
-          mr: 'गोड आणि गाढ झोपेत लीन व्हा...',
-          ta: 'ஆழ்ந்த நிம்மதியான உறக்கத்திற்கு செல்லுங்கள்...',
-          ml: 'സുഖകരമായ നിദ്രയിലേക്ക് ആണ്ടുപോവുക...',
-        },
-        voice: {
-          en: 'Drift into sleep.',
-          hi: 'सुखद और गहरी नींद में जाएं।',
-          mr: 'गाढ झोपेत लीन व्हा.',
-          ta: 'இனிய உறக்கம்.',
-          ml: 'സുഖനിദ്ര ആശംസിക്കുന്നു.',
-        }
-      },
-    ]
-  },
-  {
-    id: 'anxiety_reset', title: 'Anxiety & Overthinking Reset', category: 'Grounding', icon: '🍃',
-    color: '#06b6d4', duration: 180, difficulty: 'Beginner', defaultAmbient: 'rain',
-    moodMatch: ['surprise'],
-    description: 'Ground yourself with slow breathing when your thoughts are racing.',
-    whyGeneric: 'A simple grounding exercise to slow racing thoughts and find steady ground.',
-    phases: [
-      {
-        start: 0, end: 25, breath: { inhale: 4, hold: 2, exhale: 4 },
-        instruction: {
-          en: 'Stop. Plant your feet flat on the floor. Feel the ground supporting you.',
-          hi: 'रुकें। अपने पैरों को जमीन पर टिकाएं और स्थिरता महसूस करें।',
-          mr: 'थांबा. आपले पाय जमिनीवर घट्ट ठेवा आणि स्थिरता अनुभवा.',
-          ta: 'நிறுத்துங்கள். கால்களை தரையில் ஊன்றி அமைதியை உணருங்கள்.',
-          ml: 'നിൽക്കുക. പാദങ്ങൾ തറയിൽ ഉറപ്പിച്ച് സ്ഥിരത അനുഭവിക്കുക.',
-        },
-        voice: {
-          en: 'Stop. Plant your feet flat on the floor.',
-          hi: 'रुकें। पैरों को जमीन पर टिकाएं।',
-          mr: 'थांबा. पाय जमिनीवर स्थिर ठेवा.',
-          ta: 'கால்களை தரையில் ஊன்றி நேராக அமருங்கள்.',
-          ml: 'പാദങ്ങൾ തറയിൽ ഉറപ്പിച്ചു നിർത്തുക.',
-        }
-      },
-      {
-        start: 25, end: 55, breath: { inhale: 4, hold: 3, exhale: 5 },
-        instruction: {
-          en: 'Name 5 things you can see. This is about being here, right now.',
-          hi: 'अपने आस-पास दिखने वाली 5 चीजों को देखें। वर्तमान क्षण में रहें।',
-          mr: 'आसपासच्या ५ गोष्टी पहा. वर्तमान क्षणात उपस्थित राहा.',
-          ta: 'சுற்றியுள்ள 5 விஷயங்களை கவனியுங்கள். இந்த கணத்தில் வாழுங்கள்.',
-          ml: 'ചുറ്റുമുള്ള 5 കാര്യങ്ങൾ ശ്രദ്ധിക്കുക. ഈ നിമിഷത്തിൽ ജീവിക്കുക.',
-        },
-        voice: {
-          en: 'Name 5 things you can see around you.',
-          hi: 'अपने आस-पास की 5 चीजों को ध्यान से देखें।',
-          mr: 'आसपासच्या ५ गोष्टींकडे लक्ष द्या.',
-          ta: 'சுற்றியுள்ள 5 பொருட்களை கவனியுங்கள்.',
-          ml: 'ചുറ്റുമുള്ള 5 വസ്തുക്കൾ ശ്രദ്ധിക്കുക.',
-        }
-      },
-      {
-        start: 55, end: 90, breath: { inhale: 4, hold: 4, exhale: 6 },
-        instruction: {
-          en: 'Inhale slowly for 4 counts. Hold for 4. Exhale for 6. Repeat.',
-          hi: '4 सेकंड सांस लें। 4 सेकंड रोकें। 6 सेकंड में छोड़ें।',
-          mr: '४ सेकंद श्वास घ्या. ४ सेकंद थांबा. ६ सेकंदात सोडा.',
-          ta: '4 விநாடிகள் உள்ளிழுக்கவும். 4 விநாடிகள் நிறுத்தவும். 6 விநாடிகளில் வெளிவிடவும்.',
-          ml: '4 സെക്കൻഡ് ശ്വാസമെടുക്കുക. 4 സെക്കൻഡ് പിടിക്കുക. 6 സെക്കൻഡിൽ വിടുക.',
-        },
-        voice: {
-          en: 'Inhale slowly for 4. Hold for 4. Exhale for 6.',
-          hi: 'सांस अंदर लें... रोकें... और धीरे-धीरे छोड़ें।',
-          mr: 'श्वास आत घ्या... थांबा... आणि हळूच सोडा.',
-          ta: 'மூச்சை உள்ளிழுக்கவும்... நிறுத்தவும்... வெளிவிடவும்.',
-          ml: 'ശ്വാസം എടുക്കുക... പിടിക്കുക... പതുക്കെ വിടുക.',
-        }
-      },
-      {
-        start: 90, end: 125, breath: { inhale: 4, hold: 4, exhale: 6 },
-        instruction: {
-          en: 'Your thoughts are clouds passing through. You are the sky. Vast and still.',
-          hi: 'विचार बादलों की तरह आते-जाते हैं। आप विशाल और स्थिर आकाश हैं।',
-          mr: 'विचार ढगांसारखे येतात आणि जातात. तुम्ही अथांग आकाश आहात.',
-          ta: 'எண்ணங்கள் மேகங்கள் போன்றவை. நீங்கள் பரந்த வானம்.',
-          ml: 'ചിന്തകൾ മേഘങ്ങളെപ്പോലെ കടന്നുപോകുന്നു. നിങ്ങൾ ആകാശമാണ്.',
-        },
-        voice: {
-          en: 'Your thoughts are clouds passing through. You are the sky.',
-          hi: 'विचार बादलों की तरह हैं। आप शांत आकाश हैं।',
-          mr: 'विचार ढगांसारखे आहेत. तुम्ही स्थिर आकाश आहात.',
-          ta: 'எண்ணங்களை கடந்து செல்ல விடுங்கள்.',
-          ml: 'ചിന്തകളെ കടന്നുപോകാൻ അനുവദിക്കുക.',
-        }
-      },
-      {
-        start: 125, end: 155, breath: { inhale: 4, hold: 3, exhale: 7 },
-        instruction: {
-          en: 'Place one hand on your chest. Feel your heartbeat slowing, steadying.',
-          hi: 'एक हाथ छाती पर रखें। दिल की धड़कन को शांत और स्थिर होते महसूस करें।',
-          mr: 'एक हात छातीवर ठेवा. हृदयाचे ठोके शांत होत असल्याचे अनुभवा.',
-          ta: 'ஒரு கையை நெஞ்சில் வையுங்கள். இதய துடிப்பு அமைதியாவதை உணருங்கள்.',
-          ml: 'ഒരു കൈ നെഞ്ചിൽ വെയ്ക്കുക. ഹൃദയമിടിപ്പ് ശാന്തമാകുന്നത് അറിയുക.',
-        },
-        voice: {
-          en: 'Place a hand on your chest. Feel your heartbeat steadying.',
-          hi: 'हाथ छाती पर रखें और दिल की धड़कन महसूस करें।',
-          mr: 'छातीवर हात ठेवून हृदयाची धडधड अनुभवा.',
-          ta: 'இதயத் துடிப்பை அமைதியாக கவனியுங்கள்.',
-          ml: 'ഹൃദയമിടിപ്പ് ശാന്തമായി ശ്രദ്ധിക്കുക.',
-        }
-      },
-      {
-        start: 155, end: 180, breath: { inhale: 4, hold: 2, exhale: 6 },
-        instruction: {
-          en: 'You are safe. You are grounded. Return to your day with calm clarity.',
-          hi: 'आप सुरक्षित हैं और शांत हैं। स्पष्टता के साथ अपने दिन में वापस लौटें।',
-          mr: 'तुम्ही सुरक्षित आणि शांत आहात. नव्या आत्मविश्वासाने दिवसाकडे वळा.',
-          ta: 'நீங்கள் பாதுகாப்பாக இருக்கிறீர்கள். தெளிவுடன் நாளை தொடருங்கள்.',
-          ml: 'നിങ്ങൾ സുരക്ഷിതനും ശാന്തനുമാണ്. വ്യക്തതയോടെ മുന്നോട്ട് പോവുക.',
-        },
-        voice: {
-          en: 'You are safe. You are grounded. Return with calm clarity.',
-          hi: 'आप पूरी तरह सुरक्षित हैं। शांत मन से आगे बढ़ें।',
-          mr: 'तुम्ही सुरक्षित आहात. शांत मनाने पुढे चला.',
-          ta: 'நீங்கள் பாதுகாப்பாக உள்ளீர்கள். அமைதியாக இருங்கள்.',
-          ml: 'നിങ്ങൾ തികച്ചും സുരക്ഷിതനാണ്. ശാന്തമായിരിക്കുക.',
-        }
-      },
-    ]
-  },
-  {
-    id: 'body_scan', title: 'Mindful Body Scan', category: 'Mindfulness', icon: '🧘',
-    color: '#ec4899', duration: 300, difficulty: 'Intermediate', defaultAmbient: 'singing_bowl',
-    moodMatch: [],
-    description: 'A detailed head-to-toe awareness practice for deep physical and mental release.',
-    whyGeneric: 'A mindful scan of your body to notice and release what you are holding.',
-    phases: [
-      {
-        start: 0, end: 35, breath: { inhale: 4, hold: 2, exhale: 5 },
-        instruction: {
-          en: 'Settle into stillness. Let your body become heavy and grounded.',
-          hi: 'पूरी तरह स्थिर हो जाएं। शरीर को ढीला और शांत छोड़ें।',
-          mr: 'शांत बसा. शरीर सैल आणि स्थिर सोडा.',
-          ta: 'முற்றிலும் அமைதியாக இருங்கள். உடலை தளர்த்துங்கள்.',
-          ml: 'പൂർണ്ണ ശാന്തതയിലേക്ക് മാറുക. ശരീരം അയച്ചുവിടുക.',
-        },
-        voice: {
-          en: 'Settle into stillness. Let your body become heavy.',
-          hi: 'स्थिरता में बैठें। शरीर को शांत होने दें।',
-          mr: 'शांत बसा. शरीराला विश्रांती द्या.',
-          ta: 'அமைதியாக அமர்ந்து உடலை தளர்த்தவும்.',
-          ml: 'ശാന്തമായി ഇരുന്ന് ശരീരം അയക്കുക.',
-        }
-      },
-      {
-        start: 35, end: 75, breath: { inhale: 4, hold: 2, exhale: 5 },
-        instruction: {
-          en: 'Bring attention to the top of your head. Notice any sensation without judgment.',
-          hi: 'सिर के ऊपरी हिस्से पर ध्यान दें। किसी भी अहसास को बिना किसी निर्णय के महसूस करें।',
-          mr: 'डोक्याच्या वरच्या भागावर लक्ष द्या.',
-          ta: 'தலையின் உச்சிப் பகுதியில் கவனம் செலுத்துங்கள்.',
-          ml: 'തലയുടെ മുകളിൽ ശ്രദ്ധിക്കുക.',
-        },
-        voice: {
-          en: 'Bring attention to the top of your head.',
-          hi: 'सिर के ऊपर अपना ध्यान केंद्रित करें।',
-          mr: 'डोक्यावर लक्ष केंद्रित करा.',
-          ta: 'தலையின் உச்சியில் கவனம் செலுத்துங்கள்.',
-          ml: 'തലയുടെ മുകൾഭാഗത്ത് ശ്രദ്ധിക്കുക.',
-        }
-      },
-      {
-        start: 75, end: 115, breath: { inhale: 4, hold: 2, exhale: 6 },
-        instruction: {
-          en: 'Scan down to your forehead, eyes, cheeks, and jaw. Release each one.',
-          hi: 'माथा, आँखें, गाल और जबड़ा — हर अंग को क्रम से ढीला छोड़ते जाएं।',
-          mr: 'कपाळ, डोळे, गाल आणि जबडा — सर्व अवयव सैल सोडा.',
-          ta: 'நெற்றி, கண்கள், கன்னங்கள் மற்றும் தாடையை தளர்த்தவும்.',
-          ml: 'നെറ്റി, കണ്ണുകൾ, കവിളുകൾ, താടി എന്നിവ അയക്കുക.',
-        },
-        voice: {
-          en: 'Scan down to your face. Release each area gently.',
-          hi: 'चेहरे के हर भाग को ढीला छोड़ें।',
-          mr: 'चेहऱ्याचे सर्व भाग सैल सोडा.',
-          ta: 'முகத்தின் அனைத்து பகுதிகளையும் தளர்த்தவும்.',
-          ml: 'മുഖത്തെ ഓരോ ഭാഗവും സാവധാനം അയക്കുക.',
-        }
-      },
-      {
-        start: 115, end: 155, breath: { inhale: 5, hold: 3, exhale: 6 },
-        instruction: {
-          en: 'Feel your neck, shoulders, and upper back. Breathe warmth into any tightness.',
-          hi: 'गर्दन, कंधे और पीठ को महसूस करें। जहाँ भी तनाव हो, वहाँ सांस की गर्माहट भेजें।',
-          mr: 'मान, खांदे आणि पाठीवर लक्ष द्या. तणाव दूर करा.',
-          ta: 'கழுத்து, தோள்கள் மற்றும் முதுகில் உள்ள இறுக்கத்தை நீக்குங்கள்.',
-          ml: 'കഴുത്ത്, തോളുകൾ, പുറംഭാഗം എന്നിവയിലെ പിരിമുറുക്കം മാറ്റുക.',
-        },
-        voice: {
-          en: 'Feel your neck and shoulders. Breathe warmth into any tightness.',
-          hi: 'गर्दन और कंधों को पूरी तरह तनावमुक्त करें।',
-          mr: 'मान आणि खांदे पूर्णपणे तणावमुक्त करा.',
-          ta: 'கழுத்து மற்றும் தோள்பட்டையை தளர்த்தவும்.',
-          ml: 'കഴുത്തും തോളും പൂർണ്ണമായി അയക്കുക.',
-        }
-      },
-      {
-        start: 155, end: 195, breath: { inhale: 4, hold: 2, exhale: 6 },
-        instruction: {
-          en: 'Notice your arms, wrists, and fingertips. Let them be completely still.',
-          hi: 'हाथों, कलाइयों और उंगलियों को महसूस करें। उन्हें पूरी तरह स्थिर छोड़ें।',
-          mr: 'हात आणि बोटांकडे लक्ष द्या. त्यांना स्थिर ठेवा.',
-          ta: 'கைகளையும் விரல்களையும் முற்றிலும் அமைதியாக இருக்க விடுங்கள்.',
-          ml: 'കൈകളും വിരലുകളും പൂർണ്ണമായി നിശ്ചലമാക്കുക.',
-        },
-        voice: {
-          en: 'Notice your arms and hands. Let them be still.',
-          hi: 'हाथों और बाहों को पूरी तरह स्थिर और शांत रखें।',
-          mr: 'हात स्थिर आणि शांत ठेवा.',
-          ta: 'கைகளை அமைதியாக வையுங்கள்.',
-          ml: 'കൈകൾ ശാന്തമായി വെക്കുക.',
-        }
-      },
-      {
-        start: 195, end: 235, breath: { inhale: 5, hold: 3, exhale: 7 },
-        instruction: {
-          en: 'Move awareness into your torso — chest, stomach, lower back. Soften.',
-          hi: 'सीना, पेट और निचली पीठ — पूरे धड़ को कोमल और तनावमुक्त करें।',
-          mr: 'छाती, पोट आणि पाठ सैल सोडा.',
-          ta: 'மார்பு, வயிறு மற்றும் கீழ் முதுகை தளர்த்தவும்.',
-          ml: 'നെഞ്ചും വയറും പുറംഭാഗവും അയക്കുക.',
-        },
-        voice: {
-          en: 'Move awareness into your torso. Soften.',
-          hi: 'छाती और पेट को पूरी तरह ढीला छोड़ें।',
-          mr: 'छाती आणि पोट सैल सोडा.',
-          ta: 'மார்பு மற்றும் வயிற்றுப் பகுதியை தளர்த்தவும்.',
-          ml: 'നെഞ്ചും വയറും അയച്ചു ശാന്തമാക്കുക.',
-        }
-      },
-      {
-        start: 235, end: 275, breath: { inhale: 4, hold: 2, exhale: 6 },
-        instruction: {
-          en: 'Scan down through your hips, thighs, knees, calves, and feet. Release.',
-          hi: 'जांघों, घुटनों और पैरों के पंजों तक ध्यान ले जाएं। सब कुछ ढीला छोड़ें।',
-          mr: 'मांडी, गुडघे आणि तळपायांकडे लक्ष द्या. सर्व तणाव सोडा.',
-          ta: 'இடுப்பு முதல் பாதங்கள் வரை உள்ள அனைத்து உறுப்புகளையும் தளர்த்தவும்.',
-          ml: 'തുടകൾ മുതൽ പാദങ്ങൾ വരെയുള്ള ഭാഗങ്ങൾ അയച്ചുവിടുക.',
-        },
-        voice: {
-          en: 'Scan through your legs and feet. Release everything.',
-          hi: 'पैरों और पंजों को पूरी तरह तनावमुक्त करें।',
-          mr: 'पाय आणि तळपाय पूर्णपणे शिथिल करा.',
-          ta: 'கால்களை தளர்த்தி ஓய்வெடுக்க விடுங்கள்.',
-          ml: 'കാലുകൾ അയച്ച് പൂർണ്ണമായി വിശ്രമിക്കുക.',
-        }
-      },
-      {
-        start: 275, end: 300, breath: { inhale: 5, hold: 4, exhale: 8 },
-        instruction: {
-          en: 'Your whole body is scanned, relaxed, and at peace. Rest here.',
-          hi: 'आपका संपूर्ण शरीर पूरी तरह तनावमुक्त और शांत है। इसी शांति में रहें।',
-          mr: 'तुमचे संपूर्ण शरीर शांत आणि तणावमुक्त झाले आहे. येथेच विश्रांती घ्या.',
-          ta: 'உங்கள் முழு உடலும் ஆழ்ந்த அமைதியில் உள்ளது. இங்கேயே ஓய்வெடுங்கள்.',
-          ml: 'നിങ്ങളുടെ ശരീരം മുഴുവൻ ശാന്തതയിലാണ്. ഇവിടെ വിശ്രമിക്കുക.',
-        },
-        voice: {
-          en: 'Your whole body is at peace. Rest here.',
-          hi: 'आपका संपूर्ण शरीर परम शांति में है। विश्राम करें।',
-          mr: 'तुमचे शरीर शांततेत आहे. विश्रांती घ्या.',
-          ta: 'உங்கள் உடல் முற்றிலும் அமைதியில் உள்ளது.',
-          ml: 'നിങ്ങളുടെ ശരീരം ശാന്തതയിലാണ്. വിശ്രമിക്കുക.',
-        }
-      },
-    ]
-  },
+  }
 ]
 
 // ─── Ambient Sound Options ─────────────────────────────────────────────────

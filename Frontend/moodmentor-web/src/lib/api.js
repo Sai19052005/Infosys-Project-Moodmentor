@@ -1,19 +1,25 @@
 export const API_BASE = (
-  import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
+  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL) ||
+  'http://127.0.0.1:8000'
 ).replace(/\/$/, '')
 export const SESSION_KEY = 'moodmentor-session-v2'
 export function readSession() {
   try {
-    return JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null')
+    const s = sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY)
+    return JSON.parse(s || 'null')
   } catch {
     return null
   }
 }
 export function saveSession(result) {
   const session = { token: result.access_token, user: result.user }
-  sessionStorage.setItem(SESSION_KEY, JSON.stringify(session))
+  try {
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(session))
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session))
+  } catch {}
   return session
 }
+
 export async function api(
   path,
   { method = 'GET', body, signal, token = readSession()?.token } = {},

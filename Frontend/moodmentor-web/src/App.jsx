@@ -179,7 +179,7 @@ function Workspace({ session, onLogout, theme, toggleTheme }) {
         <a
           href="#companion"
           className="sidebar-brand"
-          aria-label="MoodMentor home"
+          aria-label="Emotion Care home"
         >
           <Brand />
         </a>
@@ -282,7 +282,20 @@ function Workspace({ session, onLogout, theme, toggleTheme }) {
               <Icon name="menu" />
             </button>
             <span className="topbar-wordmark">
-              MoodMentor<span> / </span>
+              <img
+                src={`${import.meta.env.BASE_URL}brand/emotion-care-icon.png`}
+                alt=""
+                width="22"
+                height="22"
+                style={{
+                  verticalAlign: 'middle',
+                  marginRight: '7px',
+                  borderRadius: '50%',
+                  background: '#fff',
+                  boxShadow: '0 1px 4px rgba(36, 91, 81, 0.12)',
+                }}
+              />
+              Emotion Care<span> / </span>
             </span>
             <b>
               {NAV.find((n) => n[0] === route)?.[2] ||
@@ -330,7 +343,7 @@ function Workspace({ session, onLogout, theme, toggleTheme }) {
           </ErrorBoundary>
           {route !== 'companion' && (
             <footer className="app-footer">
-              <span>MoodMentor · Make room for yourself.</span>
+              <span>Emotion Care · Make room for yourself.</span>
               <button className="text-button" onClick={() => setSafety({})}>
                 Support resources
               </button>

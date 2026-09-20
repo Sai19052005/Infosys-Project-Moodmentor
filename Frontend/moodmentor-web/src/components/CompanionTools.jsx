@@ -74,6 +74,13 @@ export const TOOLS = [
     description: '4 accessible, stress-free mini resets',
     tone: 'peach',
   },
+  {
+    id: 'photos',
+    icon: 'photo',
+    label: 'Family & Memories',
+    description: 'Relive happy moments on Google Photos',
+    tone: 'peach',
+  },
 ]
 
 
@@ -136,7 +143,7 @@ function PlacesTool() {
       <h3>Somewhere to take a fresh breath.</h3>
       <p>
         Choose what you’d like to find. Google Maps opens with your search;
-        MoodMentor does not receive your location.
+        Emotion Care does not receive your location.
       </p>
       <label>
         What are you looking for?
@@ -171,57 +178,178 @@ function PlacesTool() {
         Search in Google Maps <Icon name="arrow" />
       </a>
       <p className="quiet-note">
-        This opens an external search. Live place listings inside MoodMentor are
+        This opens an external search. Live place listings inside Emotion Care are
         not connected yet.
       </p>
     </div>
   )
 }
 
+const MUSIC_GENRES = [
+  { id: 'bollywood', label: 'Bollywood 🎬', spotify: 'bollywood top hits songs', youtube: 'latest bollywood songs' },
+  { id: 'hollywood', label: 'Hollywood 🎧', spotify: 'top hollywood english pop hits', youtube: 'top hollywood songs hits' },
+  { id: 'hindi', label: 'Hindi Songs 🎶', spotify: 'hindi top hits songs', youtube: 'hindi top songs trending' },
+  { id: 'marathi', label: 'Marathi (मराठी) 🪕', spotify: 'marathi top hits gaani songs', youtube: 'marathi songs trending' },
+  { id: 'southindian', label: 'South Indian 🌴', spotify: 'south indian top hits songs', youtube: 'south indian top hit songs' },
+  { id: 'panjabi', label: 'Punjabi ✨', spotify: 'punjabi top hits songs', youtube: 'punjabi top songs hits' },
+  { id: 'malyali', label: 'Malayali Songs (മലയാളം) 🌿', spotify: 'malayalam top hits songs', youtube: 'malayalam top songs hits' },
+  { id: 'rap', label: 'Rap 🎤', spotify: 'top rap hits songs', youtube: 'best rap songs' },
+  { id: 'hippop', label: 'Hip-Hop 📻', spotify: 'top hip hop hits', youtube: 'best hip hop songs' },
+  { id: 'latest2026', label: 'Latest 2026 Songs 🔥', spotify: 'latest 2026 trending songs hits', youtube: 'latest 2026 songs trending' },
+  { id: 'famous', label: 'All-Time Famous Songs ⭐', spotify: 'all time famous greatest hit songs', youtube: 'famous hit songs of all time' },
+]
+
+const MUSIC_VIBES = [
+  { id: 'all', label: '🔥 All Hits / Trending', suffix: '' },
+  { id: 'chill', label: '☕ Chill & Relax', suffix: 'chill lofi acoustic' },
+  { id: 'dance', label: '💃 Party & Dance', suffix: 'energetic dance party' },
+  { id: 'romantic', label: '💖 Romantic', suffix: 'romantic love songs' },
+  { id: 'emotional', label: '🌧️ Slow & Emotional', suffix: 'emotional slow sad songs' },
+]
+
 function MusicTool() {
-  const [intention, setIntention] = useState('calm instrumental')
+  const [selectedGenre, setSelectedGenre] = useState('bollywood')
+  const [selectedVibe, setSelectedVibe] = useState('all')
+  const [customSearch, setCustomSearch] = useState('')
+
+  const activeGenre = MUSIC_GENRES.find((g) => g.id === selectedGenre) || MUSIC_GENRES[0]
+  const activeVibe = MUSIC_VIBES.find((v) => v.id === selectedVibe) || MUSIC_VIBES[0]
+
+  const calculatedQuery = customSearch.trim()
+    ? customSearch.trim()
+    : activeVibe.suffix
+      ? `${activeGenre.label.split(' ')[0]} ${activeVibe.suffix}`
+      : activeGenre.spotify
+
+  const spotifyUrl = `https://open.spotify.com/search/${encodeURIComponent(calculatedQuery)}`
+  const youtubeUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(calculatedQuery)}`
+
   return (
     <div className="music-tool">
       <WellnessPhoto scene="music" className="music-tool-photo" />
-      <h3>A different soundtrack for your day.</h3>
-      <p>Choose a direction, then explore music on your preferred service.</p>
-      <div className="filter-chips">
-        {[
-          'calm instrumental',
-          'focus piano',
-          'uplifting music',
-          'nature ambience',
-        ].map((i) => (
+      <h3>A soundtrack made for you.</h3>
+      <p>Choose your favorite genre, language, or vibe, then tune in on Spotify or YouTube.</p>
+
+      <div className="music-section-label">
+        <small>SELECT GENRE / LANGUAGE</small>
+      </div>
+      <div className="filter-chips music-genre-chips">
+        {MUSIC_GENRES.map((g) => (
           <button
-            key={i}
-            aria-pressed={intention === i}
-            className={intention === i ? 'selected' : ''}
-            onClick={() => setIntention(i)}
+            key={g.id}
+            type="button"
+            aria-pressed={selectedGenre === g.id}
+            className={selectedGenre === g.id ? 'selected' : ''}
+            onClick={() => setSelectedGenre(g.id)}
           >
-            {i}
+            {g.label}
           </button>
         ))}
       </div>
+
+      <div className="music-section-label" style={{ marginTop: '12px' }}>
+        <small>OPTIONAL VIBE / MOOD</small>
+      </div>
+      <div className="filter-chips music-vibe-chips">
+        {MUSIC_VIBES.map((v) => (
+          <button
+            key={v.id}
+            type="button"
+            aria-pressed={selectedVibe === v.id}
+            className={selectedVibe === v.id ? 'selected' : ''}
+            onClick={() => setSelectedVibe(v.id)}
+          >
+            {v.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="music-custom-search" style={{ marginTop: '14px' }}>
+        <input
+          type="text"
+          placeholder="Or search any specific artist / song (e.g. Arijit Singh, Karan Aujla, Eminem...)"
+          value={customSearch}
+          onChange={(e) => setCustomSearch(e.target.value)}
+          className="music-search-input"
+        />
+      </div>
+
+      <div className="music-now-playing-preview">
+        <small>READY TO PLAY:</small>{' '}
+        <b>
+          {customSearch.trim()
+            ? `"${customSearch.trim()}"`
+            : `${activeGenre.label} ${activeVibe.id !== 'all' ? `· ${activeVibe.label}` : ''}`}
+        </b>
+      </div>
+
       <div className="button-row">
         <a
-          className="btn btn-primary"
-          href={`https://open.spotify.com/search/${encodeURIComponent(intention)}`}
+          className="btn btn-primary music-btn-spotify"
+          href={spotifyUrl}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
         >
-          Open Spotify <Icon name="arrow" />
+          <span style={{ marginRight: '6px' }}>▶</span> Open Spotify <Icon name="arrow" />
         </a>
         <a
-          className="btn btn-secondary"
-          href={`https://www.youtube.com/results?search_query=${encodeURIComponent(intention)}`}
+          className="btn btn-secondary music-btn-youtube"
+          href={youtubeUrl}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
         >
-          Open YouTube
+          <span style={{ marginRight: '6px' }}>▶</span> Open YouTube
         </a>
       </div>
       <p className="quiet-note">
-        Opens an external music search. No music account is connected.
+        Opens an external search directly on Spotify or YouTube in a new tab. No account login is required by Emotion Care.
+      </p>
+    </div>
+  )
+}
+
+function MemoriesTool() {
+  const [albumType, setAlbumType] = useState('family')
+  const categories = [
+    { id: 'family', label: 'Family & Loved Ones', url: 'https://photos.google.com/search/family' },
+    { id: 'highlights', label: 'Highlights & Memories', url: 'https://photos.google.com/foryou' },
+    { id: 'travel', label: 'Trips & Vacations', url: 'https://photos.google.com/search/travel' },
+    { id: 'all', label: 'All Photos', url: 'https://photos.google.com/' },
+  ]
+  const currentCategory = categories.find((c) => c.id === albumType) || categories[0]
+
+  return (
+    <div className="places-tool memories-tool">
+      <WellnessPhoto scene="connect" />
+      <h3>Revisit your family & cherished memories.</h3>
+      <p>
+        Looking at old photos of loved ones, warm celebrations, and comforting moments can bring instant solace and remind you of the love around you.
+      </p>
+      <div className="filter-chips">
+        {categories.map((c) => (
+          <button
+            key={c.id}
+            type="button"
+            aria-pressed={albumType === c.id}
+            className={albumType === c.id ? 'selected' : ''}
+            onClick={() => setAlbumType(c.id)}
+          >
+            {c.label}
+          </button>
+        ))}
+      </div>
+      <div className="button-row" style={{ marginTop: '1rem' }}>
+        <a
+          className="btn btn-primary"
+          href={currentCategory.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          📸 Open {currentCategory.label} in Google Photos <Icon name="arrow" />
+        </a>
+      </div>
+      <p className="quiet-note">
+        Opens your personal Google Photos library directly in a new private tab. Emotion Care does not access, store, or view any of your personal photos.
       </p>
     </div>
   )
@@ -283,14 +411,21 @@ export default function CompanionTools({
                   </button>
                 </div>
               </div>
-              <div className="tool-coming">
-                <Icon name="photo" />
+              <div className="tool-editorial" style={{ marginTop: '1rem' }}>
+                <WellnessPhoto scene="connect" />
                 <div>
-                  <b>Memory photos</b>
-                  <p>
-                    Google Photos selection is planned for a later release. Your
-                    photo library is not connected.
-                  </p>
+                  <p className="eyebrow">CHERISHED MOMENTS</p>
+                  <h3>
+                    Warm memories.
+                    <br />
+                    <em>People who care.</em>
+                  </h3>
+                  <button
+                    className="editorial-text-link"
+                    onClick={() => onSelect('photos')}
+                  >
+                    View family & memory photos <Icon name="arrow" size={15} />
+                  </button>
                 </div>
               </div>
             </>
@@ -318,6 +453,8 @@ export default function CompanionTools({
             <TrustedPerson onClose={onClose} />
           ) : selected === 'games' ? (
             <MoodGames onComplete={onClose} />
+          ) : selected === 'photos' ? (
+            <MemoriesTool />
           ) : null}
 
         </Suspense>

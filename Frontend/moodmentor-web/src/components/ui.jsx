@@ -11,6 +11,7 @@ const paths = {
   phone: 'M7 3H3c0 10 8 18 18 18v-4l-5-2-2 2a14 14 0 01-7-7l2-2-2-5',
   game: 'M6 7h12l4 12-4 1-4-4h-4l-4 4-4-1L6 7 M6 11h6 M9 8v6 M16 10h1 M18 13h1',
   photo: 'M3 3h18v18H3V3 M3 17l6-7 5 5 3-3 4 5 M15 6h1',
+  image: 'M3 3h18v18H3V3 M3 17l6-7 5 5 3-3 4 5 M15 6h1',
   plus: 'M12 4v16 M4 12h16',
   panel: 'M3 3h18v18H3V3 M9 3v18 M13 9l3 3-3 3',
   home: 'M3 10l9-7 9 7v10H3V10 M9 20v-7h6v7',
@@ -57,13 +58,18 @@ export function Icon({ name = 'spark', size = 20, ...props }) {
     </svg>
   )
 }
-export function Brand() {
+export function Brand({ size = 34 }) {
   return (
     <span className="mm-brand">
-      <span className="brand-mark">
-        <Icon name="leaf" size={21} />
+      <span className="brand-mark" style={{ width: size, height: size }}>
+        <img
+          src={`${import.meta.env.BASE_URL}brand/emotion-care-icon.png`}
+          alt="Emotion Care emblem"
+          width={size}
+          height={size}
+        />
       </span>
-      MoodMentor<span className="brand-period">.</span>
+      Emotion Care<span className="brand-period">.</span>
     </span>
   )
 }
@@ -220,14 +226,17 @@ export function Landscape({ variant = 'sage', className = '' }) {
   )
 }
 export class ErrorBoundary extends Component {
-  state = { failed: false }
-  static getDerivedStateFromError() {
-    return { failed: true }
+  state = { failed: false, error: null }
+  static getDerivedStateFromError(error) {
+    return { failed: true, error }
+  }
+  componentDidCatch(error, info) {
+    console.error('ErrorBoundary caught an error:', error, info)
   }
   render() {
     return this.state.failed ? (
       <ErrorState
-        error="This page encountered an unexpected error."
+        error={this.state.error?.message || 'This page encountered an unexpected error.'}
         retry={() => window.location.reload()}
       />
     ) : (

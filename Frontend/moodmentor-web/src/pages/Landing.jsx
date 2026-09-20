@@ -35,8 +35,8 @@ export default function Landing({ onAuth }) {
   return (
     <div className="editorial-landing">
       <nav className="editorial-nav" aria-label="Main">
-        <a href="#" aria-label="MoodMentor home">
-          <Brand />
+        <a href="#" aria-label="Emotion Care home">
+          <Brand size={38} />
         </a>
         <div className="editorial-links">
           <a href="#how-it-works">How it works</a>
@@ -55,6 +55,14 @@ export default function Landing({ onAuth }) {
       <main>
         <section className="editorial-hero">
           <div className="editorial-hero-copy">
+            <div className="hero-brand-pill">
+              <img
+                src={`${import.meta.env.BASE_URL}brand/emotion-care-icon.png`}
+                alt="Emotion Care"
+                className="hero-pill-logo"
+              />
+              <span>Emotion Care · Mindful Wellness</span>
+            </div>
             <p className="eyebrow">
               <span className="tiny-sun">✳</span> A LITTLE MORE YOU IN YOUR
               WORKDAY
@@ -89,12 +97,17 @@ export default function Landing({ onAuth }) {
               alt="Illustrative scene of a woman enjoying a sunlit pause in a garden"
             />
             <div className="hero-caption">
-              <span className="caption-icon">
-                <Icon name="leaf" />
+              <span className="caption-icon caption-brand-icon">
+                <img
+                  src={`${import.meta.env.BASE_URL}brand/emotion-care-icon.png`}
+                  alt=""
+                  width="28"
+                  height="28"
+                />
               </span>
               <div>
                 <b>You belong in your day, too.</b>
-                <span>A fresh perspective can start with a pause.</span>
+                <span>A fresh perspective with Emotion Care.</span>
               </div>
             </div>
             <span className="floating-word" aria-hidden="true">
@@ -124,7 +137,7 @@ export default function Landing({ onAuth }) {
           </div>
           <div className="editorial-story-body">
             <p>
-              Start with what’s on your mind. MoodMentor connects your
+              Start with what’s on your mind. Emotion Care connects your
               conversation to a practical reset, then learns from what you tell
               us afterward.
             </p>
