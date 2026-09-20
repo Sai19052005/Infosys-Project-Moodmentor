@@ -1,8 +1,8 @@
 """Curated activities are content, never fabricated user data."""
 
 
-def activity(key, title, kind, category, minutes, benefit, steps, tags):
-    return dict(
+def activity(key, title, kind, category, minutes, benefit, steps, tags, audio_url=None, artwork_url=None):
+    res = dict(
         id=key,
         title=title,
         type=kind,
@@ -13,6 +13,13 @@ def activity(key, title, kind, category, minutes, benefit, steps, tags):
         tags=tags,
         level="All levels",
     )
+    if audio_url:
+        res["audio_url"] = audio_url
+    if artwork_url:
+        res["artwork_url"] = artwork_url
+    return res
+
+
 
 
 CATALOG = [
@@ -77,36 +84,46 @@ CATALOG = [
         ["focus", "motivation"],
     ),
     activity(
-        "meditation-15",
-        "Leave the workday behind",
+        "meditation-ravi-shankar-10",
+        "10-Min Meditation · Sri Sri Ravi Shankar",
         "meditation",
-        "Recovery",
-        15,
-        "Create a boundary between work and personal time.",
+        "Deep Calm",
+        10,
+        "A sublime bilingual guided meditation on breath, inner stillness, and expanding consciousness with Gurudev Sri Sri Ravi Shankar.",
         [
-            "Find a quiet spot away from your workspace.",
-            "Notice your face, shoulders, hands, and feet in turn.",
-            "Allow each area to soften without forcing it.",
-            "Acknowledge unfinished tasks; they can wait for your next workday.",
-            "Think of one small thing you want to enjoy this evening.",
+            "Sit comfortably with spine erect, loosen shoulders, and gently close your eyes.",
+            "Take a deep breath in, hold gently, and allow the breath to release on its own.",
+            "Observe the stillness of your mind as breath pauses; let your entire body soften.",
+            "Honor your body as a precious gift of nature made of trillions of cells.",
+            "Feel the air inside and outside of you; breathe in and out with a gentle smile.",
+            "Recognize your mind expanding like the vast open sky; repose peacefully in yourself.",
+            "Om Shanti, Shanti, Shantihi. Gently open your eyes feeling deeply refreshed.",
         ],
-        ["sleep", "relaxation", "boundaries"],
+        ["meditation", "calm", "relaxation", "peace", "ravi shankar", "breathing"],
+        audio_url="/audio/meditations/ravi_shankar_10min.mp3",
+        artwork_url="/images/meditation-ravi-shankar.png",
     ),
     activity(
-        "meditation-20",
-        "A softer landing",
+        "meditation-choa-kok-sui-27",
+        "Daily 30-Min Mind Refreshing · Master Choa Kok Sui",
         "meditation",
-        "Recovery",
-        20,
-        "An unhurried body scan for winding down.",
+        "Energy & Healing",
+        27,
+        "Grand Master Choa Kok Sui's extremely powerful Twin Hearts Meditation for deep peace, illumination, blessing the Earth, and daily mind rejuvenation.",
         [
-            "Sit or lie somewhere comfortable. Adjust whenever you need.",
-            "Bring attention slowly from your toes through your legs.",
-            "Notice your back, shoulders, arms, and hands.",
-            "Let your jaw soften and your breath find its own pace.",
-            "Rest with the sensations of your whole body. Return slowly when ready.",
+            "Sit comfortably with an erect spine, connect tongue to palate, and invoke divine blessings.",
+            "Recall a happy event and smile with tenderness at your heart center.",
+            "Smile at your crown center and feel it responding with divine love and sweetness.",
+            "Raise your hands and bless the Earth with the prayer of Saint Francis of Assisi.",
+            "Where there is hatred sow love; where injury, pardon; where despair, hope; where darkness, light.",
+            "Bless every person and being on Earth with divine light, love, kindness, and joy.",
+            "Chant the sacred mantra OM and meditate on the interval of stillness between the OMs.",
+            "Release excess energy by blessing the Earth, and gently ground through feet and base of spine.",
+            "Give thanks in full faith and gently open your eyes with a big smile.",
         ],
-        ["sleep", "relaxation"],
+        ["meditation", "calm", "relaxation", "peace", "master choa kok sui", "twin hearts", "healing", "energy"],
+        audio_url="/audio/meditations/choa_kok_sui_27min.mp3",
+        artwork_url="/images/meditation-master.png",
     ),
     activity(
         "stretch-3",

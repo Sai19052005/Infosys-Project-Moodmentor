@@ -9,7 +9,7 @@ import logging
 
 from app.config import GEMINI_API_KEY, GEMINI_MODEL
 
-PROMPT_TEMPLATE = """You are MoodMentor, a warm and supportive emotional wellness companion.
+PROMPT_TEMPLATE = """You are Emotion Care, a warm and supportive emotional wellness companion.
 
 A user wrote this journal entry:
 \"\"\"{text}\"\"\"

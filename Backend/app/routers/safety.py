@@ -99,6 +99,10 @@ def set_trusted_contact(
         contact.name = payload.name.strip()
         contact.phone = payload.phone.strip() if payload.phone else ""
         contact.email = payload.email.strip() if payload.email else None
+        if payload.relationship_type:
+            contact.relationship_type = payload.relationship_type.strip()
+        if payload.notification_mode:
+            contact.notification_mode = payload.notification_mode
     else:
         # Enforce max 3 contacts limit
         count = db.query(TrustedContact).filter(TrustedContact.user_id == current_user.id).count()
@@ -109,10 +113,10 @@ def set_trusted_contact(
             user_id=current_user.id,
             role=payload.role,
             name=payload.name.strip(),
-            relationship_type=payload.role.replace("_", " ").title(),
+            relationship_type=(payload.relationship_type or payload.role.replace("_", " ").title()).strip(),
             phone=payload.phone.strip() if payload.phone else "",
             email=payload.email.strip() if payload.email else None,
-            notification_mode="ask",
+            notification_mode=payload.notification_mode or "ask",
         )
         db.add(contact)
 
@@ -242,7 +246,15 @@ def notify_trusted_contact(
     )
     if latest_event:
         latest_event.notified_contact = result["delivered"]
-        db.commit()
+    else:
+        event = SafetyEvent(
+            user_id=current_user.id,
+            risk_level="critical",
+            trigger_source="manual",
+            notified_contact=result["delivered"],
+        )
+        db.add(event)
+    db.commit()
 
     return SafetyNotifyResponse(
         success=result["delivered"],

@@ -21,6 +21,7 @@ def migrate(engine):
             "interests": "JSON",
             "available_time_description": "VARCHAR(200)",
             "city": "VARCHAR(100)",
+            "music_preference": "VARCHAR(100) DEFAULT 'bollywood'",
         },
     }
     with engine.begin() as conn:

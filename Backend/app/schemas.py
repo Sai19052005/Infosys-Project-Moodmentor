@@ -19,6 +19,9 @@ class UserCreate(BaseModel):
     def password_bytes(cls, value):
         if len(value.encode("utf-8")) > 72:
             raise ValueError("Password must be at most 72 UTF-8 bytes")
+        common_weak = {"password", "12345678", "qwerty123", "password123", "admin123", "123456789"}
+        if value.lower() in common_weak or value.isdigit():
+            raise ValueError("Password is too weak. Please avoid common or numeric-only passwords.")
         return value
 
 
@@ -253,9 +256,11 @@ class WorkLifeScoreResponse(BaseModel):
 # -- Safety & Contacts --
 class TrustedContactInput(BaseModel):
     name: str = Field(min_length=2, max_length=100)
-    phone: str | None = Field(None, max_length=20)
+    phone: str | None = Field(None, max_length=30)
     email: EmailStr | None = None
     role: str = Field(default="trusted_contact", pattern="^(trusted_contact|best_friend|family)$")
+    relationship_type: str | None = Field(None, max_length=50)
+    notification_mode: str = Field(default="ask", pattern="^(ask|automatic|never)$")
 
 
 class TrustedContactResponse(BaseModel):
@@ -265,6 +270,9 @@ class TrustedContactResponse(BaseModel):
     phone: str | None
     email: str | None
     role: str
+    relationship_type: str | None = None
+    notification_mode: str = "ask"
+
 
 
 # -- Onboarding --
@@ -273,3 +281,4 @@ class OnboardingInput(BaseModel):
     interests: list[str] | None = None
     available_time_description: str | None = Field(None, max_length=200)
     city: str | None = Field(None, max_length=100)
+    music_preference: str | None = Field("bollywood", max_length=100)

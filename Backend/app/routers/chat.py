@@ -5,11 +5,14 @@
 
 import logging
 
+from datetime import datetime, timezone, timedelta
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_db, get_current_user
-from app.models import User, ChatMessage
+from app.models import User, ChatMessage, TrustedContact, SafetyEvent
+from app.services.notification_service import NotificationService
 from app.schemas import (
     ChatInput,
     ChatMessageResponse,
@@ -51,6 +54,7 @@ def _try_rag_reply(text, emotion, history, profile, db, user_id):
         )
 
         # Generate RAG-augmented response
+        music_preference = getattr(profile, "music_preference", "bollywood")
         result = rag.generate_rag_response(
             text=text,
             emotion=emotion,
@@ -58,6 +62,7 @@ def _try_rag_reply(text, emotion, history, profile, db, user_id):
             retrieved_chunks=retrieved,
             personal_context=personal_context,
             ai_allowed=profile.ai_consent,
+            music_preference=music_preference,
         )
 
         sources = [
@@ -121,6 +126,50 @@ def send_chat(
     # 3️⃣ Build the reply
     if crisis:
         reply_text = CRISIS_REPLY
+        try:
+            contact = (
+                db.query(TrustedContact)
+                .filter(TrustedContact.user_id == current_user.id)
+                .first()
+            )
+            if contact:
+                now = datetime.now(timezone.utc)
+                twelve_hours_ago = now - timedelta(hours=12)
+                recent_alert = (
+                    db.query(SafetyEvent)
+                    .filter(
+                        SafetyEvent.user_id == current_user.id,
+                        SafetyEvent.notified_contact == True,
+                        SafetyEvent.created_at >= twelve_hours_ago,
+                    )
+                    .first()
+                )
+                if not recent_alert and contact.notification_mode == "automatic":
+                    sms_result = NotificationService.send_trusted_contact_alert(
+                        user_name=current_user.name,
+                        contact_name=contact.name,
+                        contact_phone=contact.phone,
+                        contact_email=contact.email,
+                    )
+                    event = SafetyEvent(
+                        user_id=current_user.id,
+                        risk_level="critical",
+                        trigger_source="chat",
+                        notified_contact=sms_result.get("delivered", False),
+                    )
+                    db.add(event)
+                    db.commit()
+                elif not recent_alert:
+                    event = SafetyEvent(
+                        user_id=current_user.id,
+                        risk_level="critical",
+                        trigger_source="chat",
+                        notified_contact=False,
+                    )
+                    db.add(event)
+                    db.commit()
+        except Exception as e:
+            logger.warning("crisis_contact_notification_error: %s", e)
     else:
         history = (
             db.query(ChatMessage)
@@ -145,6 +194,7 @@ def send_chat(
                 emotion,
                 history,
                 ai_allowed=profile.ai_consent,
+                music_preference=getattr(profile, "music_preference", "bollywood"),
             )
 
     # 4️⃣ Store both sides
@@ -184,6 +234,7 @@ def send_chat(
             text=payload.text, source="chat", mood=None, energy=None, stress=None
         ),
         analysis=result,
+        chat_reply=reply_text,
     )
     db.commit()
     return ChatSendResponse(

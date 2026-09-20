@@ -30,7 +30,7 @@ def get_current_user(
     """Validates the JWT and returns the logged-in User.
     Add `current_user: User = Depends(get_current_user)` to ANY
     endpoint to make it private."""
-    user_id = decode_token(creds.credentials)
+    user_id = decode_token(creds.credentials, db=db)
     user = db.query(User).filter(User.id == user_id).first()
     if user is None:
         raise HTTPException(status_code=401, detail="User not found")

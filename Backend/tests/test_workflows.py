@@ -360,8 +360,16 @@ def test_plan_change_and_dismiss(env):
     )
 
 
-def test_oauth_unconfigured_and_no_mock_path(env):
+def test_oauth_unconfigured_and_no_mock_path(env, monkeypatch):
     c, _ = env
+    # Temporarily clear Google OAuth config so the "unconfigured" code path is tested
+    # even when .env has real credentials.
+    import app.config as cfg
+    import app.routers.google_auth as ga
+    monkeypatch.setattr(cfg, "GOOGLE_CLIENT_ID", "")
+    monkeypatch.setattr(cfg, "GOOGLE_CLIENT_SECRET", "")
+    monkeypatch.setattr(ga, "GOOGLE_CLIENT_ID", "")
+    monkeypatch.setattr(ga, "GOOGLE_CLIENT_SECRET", "")
     assert c.get("/auth/google/config").json()["enabled"] is False
     assert c.post(
         "/auth/google", json={"credential": "mock_google_victim"}
@@ -611,4 +619,23 @@ def test_clear_personal_context_endpoint(env):
     h = register(c)
     r = c.delete("/chat/personal-context", headers=h)
     assert r.status_code == 204
+
+
+def test_progress_summary_health_metrics(env):
+    """Verify /wellness/summary returns wellness_score, verdict, strengths, focus areas, and emotional balance."""
+    c, _ = env
+    h = register(c)
+    r = c.get("/wellness/summary", headers=h)
+    assert r.status_code == 200
+    data = r.json()
+    assert "wellness_score" in data
+    assert 0 <= data["wellness_score"] <= 100
+    assert "wellness_status" in data
+    assert "wellness_verdict" in data
+    assert "strengths" in data and len(data["strengths"]) > 0
+    assert "focus_areas" in data and len(data["focus_areas"]) > 0
+    assert "emotional_balance" in data
+    assert "uplifting_pct" in data["emotional_balance"]
+    assert "recovery_rate" in data
+
 

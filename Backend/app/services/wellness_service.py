@@ -48,6 +48,7 @@ def context_agent(text, stated, ai_allowed):
             "overwhelmed": ["overwhelm", "panic"],
             "motivation": ["motivation", "drained", "exhausted"],
             "focus": ["distract", "concentrate", "focus"],
+            "meditation": ["meditat", "breathe", "breathing", "mindful", "relax", "calm down", "zen", "peace", "pause"],
         }
         context = next(
             (
@@ -85,6 +86,7 @@ def context_agent(text, stated, ai_allowed):
                     "motivation",
                     "focus",
                     "break",
+                    "meditation",
                 }:
                     context, method = candidate, "gemini"
             except Exception:
@@ -128,6 +130,7 @@ def rank_activities(db, user_id, checkin, context, profile, minutes):
         "motivation": ["movement", "music", "focus"],
         "focus": ["focus", "meditation"],
         "break": ["break", "walk"],
+        "meditation": ["meditation", "breathing", "grounding"],
     }
     types = targets.get(
         context,
@@ -181,12 +184,12 @@ def rank_activities(db, user_id, checkin, context, profile, minutes):
             else:
                 new_a["why"] = f"A short {a['type']} break might help."
             results.append(new_a)
-            if len(results) >= 5:
+            if len(results) >= 2:
                 break
     return results
 
 
-def coordinate(db, user_id, payload, analysis=None):
+def coordinate(db, user_id, payload, analysis=None, chat_reply=None):
     profile = get_profile(db, user_id)
     safety = assess_safety(payload.text)
     critical = safety["risk_level"] in {"high", "critical"}
@@ -240,10 +243,53 @@ def coordinate(db, user_id, payload, analysis=None):
         )
     )
     
-    from app.services.external_recommendations import get_external_recommendations
+    from app.services.external_recommendations import get_external_recommendations, extract_mentioned_movie
+    from app.services.chat_service import extract_mentioned_song, detect_chat_intent
     external_recs = []
     if not critical:
-        external_recs = get_external_recommendations(analysis["dominant_emotion"])
+        music_pref = getattr(profile, "music_preference", "bollywood")
+        combined_context = f"{payload.text or ''} {chat_reply or ''}"
+
+        # Detect which wellness pillar the conversation relates to
+        active_intent = detect_chat_intent(payload.text or "", chat_reply or "")
+
+        external_recs = get_external_recommendations(
+            analysis["dominant_emotion"],
+            music_preference=music_pref,
+            user_text=combined_context,
+            active_intent=active_intent,
+        )
+        
+        # 1. If a movie was mentioned in chat or requested, feature it in the movie card!
+        movie_mentioned = extract_mentioned_movie(chat_reply or "", payload.text or "")
+        if movie_mentioned:
+            m_title, m_url, m_lang, m_desc = movie_mentioned
+            featured_movie = {
+                "type": "movie",
+                "title": m_title,
+                "language": m_lang,
+                "description": m_desc,
+                "url": m_url,
+                "icon": "play",
+            }
+            # Put featured movie in place of generic movie recommendations
+            non_movies = [r for r in external_recs if r.get("type") != "movie"]
+            music_part = [r for r in non_movies if r.get("type") == "music"]
+            other_part = [r for r in non_movies if r.get("type") != "music"]
+            external_recs = music_part + [featured_movie] + other_part
+
+        # 2. If a song was mentioned in the chat reply or user prompt, feature it on the Spotify card!
+        song_mentioned = extract_mentioned_song(chat_reply or "", payload.text or "", active_intent=active_intent)
+        if song_mentioned:
+            song_title, song_url = song_mentioned
+            music_rec = {
+                "type": "music",
+                "title": song_title,
+                "description": "Suggested in your conversation · Ready to play on Spotify",
+                "url": song_url,
+                "icon": "music",
+            }
+            external_recs = [music_rec] + [r for r in external_recs if r.get("type") != "music"]
 
     trace = [
         dict(
@@ -436,6 +482,127 @@ def progress_summary(db, user_id):
                     action="dashboard",
                 )
             )
+    # ── Interpretive Health Metrics & "Doing Right vs Wrong" Feedback ──
+    # 1. Wellness Score (0 - 100)
+    mood_vals = [c.mood for c in checkins if c.mood is not None]
+    if mood_vals:
+        avg_mood = sum(mood_vals) / len(mood_vals)
+        mood_score = (avg_mood / 5.0) * 45.0
+    else:
+        avg_mood = 3.5
+        mood_score = 30.0
+
+    goal = max(profile.weekly_goal or 3, 1)
+    practice_score = min(len(weekly) / goal, 1.0) * 25.0
+
+    completed_with_deltas = [
+        s.mood_after - s.mood_before
+        for s in sessions
+        if s.mood_before is not None and s.mood_after is not None
+    ]
+    if completed_with_deltas:
+        avg_recovery = sum(completed_with_deltas) / len(completed_with_deltas)
+        recovery_score = min(max(avg_recovery, 0.0) / 2.0, 1.0) * 15.0
+    else:
+        avg_recovery = 1.0
+        recovery_score = 10.0
+
+    streak_score = min(streak, 5) * 3.0
+    wellness_score = int(round(min(max(mood_score + practice_score + recovery_score + streak_score, 15), 100)))
+
+    # 2. Status & Verdict ("Am I doing right or wrong?")
+    if wellness_score >= 75:
+        wellness_status = "Thriving & On Track"
+        wellness_status_tone = "positive"
+        wellness_verdict = "You are doing wonderfully! Your mindfulness moments and consistent check-ins are actively nurturing your resilience."
+    elif wellness_score >= 50:
+        wellness_status = "Balanced & Steady"
+        wellness_status_tone = "steady"
+        wellness_verdict = "You are maintaining a healthy balance. Navigating daily ups and downs with regular pauses builds lasting peace."
+    else:
+        wellness_status = "Needs Gentle Care & Rest"
+        wellness_status_tone = "needs_care"
+        wellness_verdict = "You've been experiencing heavier feelings or stress recently. Having difficult days is never 'doing wrong' — it's your inner signal to slow down, rest, and be extra gentle with yourself."
+
+    # 3. Trajectory
+    sorted_moods = [round(sum(values) / len(values), 2) for d, values in sorted(daily.items())]
+    if len(sorted_moods) >= 4:
+        first_half = sum(sorted_moods[: len(sorted_moods) // 2]) / (len(sorted_moods) // 2)
+        second_half = sum(sorted_moods[len(sorted_moods) // 2 :]) / (len(sorted_moods) - len(sorted_moods) // 2)
+        delta = second_half - first_half
+        if delta >= 0.25:
+            trajectory = f"Trending Up (+{delta:.1f})"
+            trajectory_tone = "positive"
+        elif delta <= -0.25:
+            trajectory = f"Dipping ({delta:.1f}) · Needs Care"
+            trajectory_tone = "needs_care"
+        else:
+            trajectory = "Steady & Grounded"
+            trajectory_tone = "steady"
+    else:
+        trajectory = "Building Baseline"
+        trajectory_tone = "steady"
+
+    # 4. Strengths ("What You're Doing Right")
+    strengths = []
+    if len(sessions) >= 3:
+        strengths.append(f"Mindfulness Habit: You've completed {len(sessions)} dedicated reset sessions.")
+    elif len(sessions) > 0:
+        strengths.append(f"Starting Strong: You've already completed {len(sessions)} session{'s' if len(sessions) > 1 else ''}.")
+    else:
+        strengths.append("Courageous Start: You've taken the first brave step to prioritize your mental wellbeing.")
+
+    if streak >= 2:
+        strengths.append(f"Active Consistency: You've maintained a {streak}-day wellness streak.")
+    
+    if completed_with_deltas and avg_recovery > 0:
+        strengths.append(f"Emotional Rebound: You recover by an average of +{avg_recovery:.1f} points after mindful sessions.")
+
+    if len(checkins) >= 3:
+        strengths.append(f"Self-Awareness: Logged {len(checkins)} check-ins, staying tuned into how you feel.")
+    else:
+        strengths.append("Self-Care Priority: You are actively checking in and reflecting on your day.")
+
+    # 5. Focus Areas ("Where to Focus")
+    focus_areas = []
+    if len(weekly) < goal:
+        remaining = goal - len(weekly)
+        focus_areas.append(f"Weekly Reset Goal: {len(weekly)} of {goal} sessions completed ({remaining} to reach your weekly goal). Even a 2-minute pause counts.")
+    
+    stressful_checkins = sum(1 for c in checkins if c.stress is not None and c.stress >= 4)
+    if stressful_checkins >= 2:
+        focus_areas.append("Stress Moments: Higher stress noted recently. Try setting a 5-minute breathing or music break during tense afternoons.")
+
+    heavy_emotions = sum(1 for c in checkins if c.emotion in ["sadness", "grief", "fear", "lonely", "anger"])
+    if heavy_emotions >= 2:
+        focus_areas.append("Comfort & Connection: When heavier feelings visit, revisit your family memories tool or reach out to your saved trusted contact.")
+    
+    if not focus_areas:
+        focus_areas.append("Pacing: Keep listening to your body — rest days and doing nothing are vital parts of wellbeing.")
+
+    # 6. Emotional Balance Segmentation
+    uplifting_names = {"joy", "gratitude", "love", "optimism", "pride", "relief", "excitement", "amusement", "caring", "approval"}
+    steady_names = {"calm", "neutral"}
+    heavy_names = {"sadness", "grief", "fear", "anger", "remorse", "disappointment", "embarrassment"}
+
+    total_emotions = sum(1 for c in checkins if c.emotion != "not_analyzed")
+    if total_emotions > 0:
+        uplifting_cnt = sum(1 for c in checkins if c.emotion in uplifting_names)
+        steady_cnt = sum(1 for c in checkins if c.emotion in steady_names)
+        heavy_cnt = sum(1 for c in checkins if c.emotion in heavy_names)
+        unaccounted = total_emotions - (uplifting_cnt + steady_cnt + heavy_cnt)
+        if unaccounted > 0:
+            steady_cnt += unaccounted
+        uplifting_pct = int(round((uplifting_cnt / total_emotions) * 100))
+        steady_pct = int(round((steady_cnt / total_emotions) * 100))
+        heavy_pct = max(0, 100 - (uplifting_pct + steady_pct))
+    else:
+        uplifting_pct = 50
+        steady_pct = 35
+        heavy_pct = 15
+
+    recovery_rate_str = f"+{avg_recovery:.1f}" if avg_recovery > 0 else f"{avg_recovery:.1f}"
+
     return dict(
         total_sessions=len(sessions),
         total_minutes=round(sum(s.elapsed_seconds for s in sessions) / 60),
@@ -465,4 +632,18 @@ def progress_summary(db, user_id):
                 ("Making room", 20),
             ]
         ],
+        wellness_score=wellness_score,
+        wellness_status=wellness_status,
+        wellness_status_tone=wellness_status_tone,
+        wellness_verdict=wellness_verdict,
+        wellness_trajectory=trajectory,
+        wellness_trajectory_tone=trajectory_tone,
+        strengths=strengths,
+        focus_areas=focus_areas,
+        emotional_balance=dict(
+            uplifting_pct=uplifting_pct,
+            steady_pct=steady_pct,
+            heavy_pct=heavy_pct,
+        ),
+        recovery_rate=recovery_rate_str,
     )

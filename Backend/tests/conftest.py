@@ -3,6 +3,7 @@ import os
 os.environ["SECRET_KEY"] = "test-only-signing-key-with-at-least-32-characters"
 os.environ["GEMINI_API_KEY"] = ""
 os.environ["EMOTION_BACKEND"] = "local"
+os.environ["DB_ENCRYPTION_KEY"] = "5DvRxZUuojxtuy8mG-YixJlXC56G1qvbQUM-Dm1Jk1E="
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_db, get_current_user
@@ -9,9 +10,11 @@ from app.services.auth_service import (
     hash_password,
     verify_password,
     create_access_token,
+    revoke_token,
 )
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
+_bearer = HTTPBearer()
 
 
 @router.post("/signup", response_model=TokenResponse, status_code=201)
@@ -99,6 +102,7 @@ def export_user_data(
             "interests": profile.interests if profile else [],
             "city": profile.city if profile else None,
             "ai_consent": profile.ai_consent if profile else False,
+            "music_preference": getattr(profile, "music_preference", "bollywood") if profile else "bollywood",
         },
         "journal_entries": [
             {
@@ -154,12 +158,27 @@ def export_user_data(
     }
 
 
-@router.delete("/me", status_code=204)
-def delete_account(
+@router.post("/logout")
+def logout(
+    creds: HTTPAuthorizationCredentials = Depends(_bearer),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """Permanently delete user account and cascade delete all associated data."""
+    """Revoke current JWT token."""
+    if creds:
+        revoke_token(creds.credentials, db)
+    return {"status": "ok", "detail": "Logged out successfully"}
+
+
+@router.delete("/me", status_code=204)
+def delete_account(
+    creds: HTTPAuthorizationCredentials = Depends(_bearer),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Permanently delete user account, revoke token, and cascade delete all associated data."""
+    if creds:
+        revoke_token(creds.credentials, db)
     # Delete personal context FTS index entries if any
     try:
         from app.services.personal_context_service import get_personal_context_service

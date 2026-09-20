@@ -37,6 +37,7 @@ class ProfileInput(BaseModel):
     interests: list[str] = Field(default_factory=list, max_length=20)
     available_time_description: str | None = Field(None, max_length=200)
     city: str | None = Field(None, max_length=100)
+    music_preference: str = Field("bollywood", max_length=100)
 
     @field_validator("timezone")
     @classmethod

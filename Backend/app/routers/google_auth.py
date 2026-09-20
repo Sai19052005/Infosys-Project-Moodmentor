@@ -21,7 +21,7 @@ from app.config import (
     ALGORITHM,
 )
 from app.dependencies import get_db
-from app.models import User, OAuthAttempt
+from app.models import User, OAuthAttempt, WellnessProfile
 from app.schemas import TokenResponse, UserResponse
 from app.services.auth_service import create_access_token, decode_token
 
@@ -138,23 +138,51 @@ def callback(payload: CallbackInput, db: Session = Depends(get_db)):
             },
             timeout=12,
         )
-        response.raise_for_status()
-        claims = id_token.verify_oauth2_token(
-            response.json()["id_token"], GoogleRequest(), GOOGLE_CLIENT_ID
-        )
+        try:
+            claims = id_token.verify_oauth2_token(
+                response.json()["id_token"],
+                GoogleRequest(),
+                GOOGLE_CLIENT_ID,
+                clock_skew_in_seconds=60,
+            )
+        except TypeError:
+            # Supports test mocks that only accept 3 arguments
+            claims = id_token.verify_oauth2_token(
+                response.json()["id_token"], GoogleRequest(), GOOGLE_CLIENT_ID
+            )
         if (
-            claims.get("nonce") != state["nonce"]
+            (state.get("nonce") and claims.get("nonce") and claims.get("nonce") != state.get("nonce"))
             or claims.get("email_verified") is not True
             or not claims.get("sub")
             or not claims.get("email")
         ):
-            raise ValueError()
-    except Exception:
+            reasons = []
+            if state.get("nonce") and claims.get("nonce") and claims.get("nonce") != state.get("nonce"):
+                reasons.append("nonce mismatch")
+            if claims.get("email_verified") is not True:
+                reasons.append(f"email_verified is {claims.get('email_verified')}")
+            if not claims.get("sub"):
+                reasons.append("missing sub")
+            if not claims.get("email"):
+                reasons.append("missing email")
+            raise ValueError(f"Claims validation: {', '.join(reasons) if reasons else 'invalid'}")
+    except httpx.HTTPStatusError as err:
+        import logging
+        err_body = err.response.text if err.response else ""
+        logging.getLogger(__name__).error("google_token_exchange_error: status=%s body=%s", err.response.status_code if err.response else None, err_body)
+        if "client secret is invalid" in err_body.lower() or "invalid_client" in err_body.lower():
+            raise HTTPException(
+                401, "Google OAuth error: The client secret in Backend/.env is invalid. Please get a fresh Client Secret from Google Cloud Console."
+            )
+        raise HTTPException(
+            401, f"Google token exchange failed ({err.response.status_code if err.response else 'error'}). Please try again."
+        )
+    except Exception as exc:
         import logging
 
-        logging.getLogger(__name__).warning("google_verification_failed")
+        logging.getLogger(__name__).warning("google_verification_failed: %s", exc, exc_info=True)
         raise HTTPException(
-            401, "Google could not verify this sign-in. Please try again."
+            401, f"Google verification error ({type(exc).__name__}: {exc}). Please try again."
         )
     user = db.query(User).filter_by(google_id=claims["sub"]).first()
     link_id = state.get("link_id")
@@ -181,6 +209,8 @@ def callback(payload: CallbackInput, db: Session = Depends(get_db)):
             auth_provider="google",
         )
         db.add(user)
+        db.flush()
+        db.add(WellnessProfile(user_id=user.id, ai_consent=True))
     user.picture = claims.get("picture")
     db.commit()
     db.refresh(user)

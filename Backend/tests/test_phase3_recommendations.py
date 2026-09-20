@@ -26,3 +26,22 @@ def test_dismiss_endpoint(env):
         headers=h,
     )
     assert r.status_code == 204
+
+
+def test_photos_recommendation_for_family_context():
+    """When user mentions family or memories, Google Photos recommendation is included."""
+    from app.services.external_recommendations import get_external_recommendations
+
+    # Test with English keywords
+    recs = get_external_recommendations("sadness", "bollywood", user_text="I miss my mom and family")
+    photo_recs = [r for r in recs if r["type"] == "photos"]
+    assert len(photo_recs) == 1
+    assert "photos.google.com/search/family" in photo_recs[0]["url"]
+    assert "Family & Cherished Memories" in photo_recs[0]["title"]
+
+    # Test with Indic language keywords (Marathi / Hindi)
+    recs_indic = get_external_recommendations("sadness", "marathi", user_text="मला घरची आणि आईची खूप आठवण येत आहे")
+    photo_recs_indic = [r for r in recs_indic if r["type"] == "photos"]
+    assert len(photo_recs_indic) == 1
+    assert "photos.google.com/search/family" in photo_recs_indic[0]["url"]
+

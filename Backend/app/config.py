@@ -24,9 +24,11 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./moodmentor.db")
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-GOOGLE_TTS_API_KEY = os.getenv("GOOGLE_TTS_API_KEY", "")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite").strip()
+GOOGLE_TTS_API_KEY = os.getenv("GOOGLE_TTS_API_KEY", "").strip()
+FAST2SMS_API_KEY = os.getenv("FAST2SMS_API_KEY", "").strip()
+DB_ENCRYPTION_KEY = os.getenv("DB_ENCRYPTION_KEY", "").strip()
 # If 2.5-flash ever errors, switch to "gemini-2.0-flash" in your .env
 
 # Google OAuth 2.0 Settings (Least-Privilege, Secrets strictly backend-only)
@@ -36,9 +38,13 @@ FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173").rstrip("/")
 GOOGLE_REDIRECT_URI = os.getenv(
     "GOOGLE_REDIRECT_URI", FRONTEND_URL + "/auth/google/callback"
 )
-CORS_ORIGINS = os.getenv(
-    "CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
-).split(",")
+CORS_ORIGINS = [
+    origin.strip().rstrip("/")
+    for origin in os.getenv(
+        "CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
+    ).split(",")
+    if origin.strip()
+]
 if "*" in CORS_ORIGINS:
     raise RuntimeError("CORS_ORIGINS must contain explicit origins")
 EMOTION_BACKEND = os.getenv("EMOTION_BACKEND", "local")

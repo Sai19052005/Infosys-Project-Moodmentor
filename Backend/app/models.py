@@ -21,6 +21,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from app.database import Base
+from app.services.encryption import EncryptedText
 
 
 class User(Base):
@@ -70,8 +71,8 @@ class JournalEntry(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    text = Column(Text, nullable=False)
-    ai_reply = Column(Text, nullable=True)  # 🆕 Gemini's response
+    text = Column(EncryptedText, nullable=False)          # 🔒 encrypted at rest
+    ai_reply = Column(EncryptedText, nullable=True)       # 🔒 encrypted at rest
     created_at = Column(
         DateTime, default=lambda: datetime.now(timezone.utc), index=True
     )
@@ -131,7 +132,7 @@ class ChatMessage(Base):  # 🆕 Week 5 — companion chat
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     role = Column(String(10), nullable=False)  # "user" or "assistant"
-    text = Column(Text, nullable=False)
+    text = Column(EncryptedText, nullable=False)           # 🔒 encrypted at rest
     emotion = Column(String(20), nullable=True)  # detected emotion (user msgs only)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
@@ -221,8 +222,8 @@ class TrustedContact(Base):
     relationship_type = Column(
         String(50), nullable=False
     )  # e.g., 'Friend', 'Family', 'Partner'
-    phone = Column(String(30), nullable=False)
-    email = Column(String(255), nullable=True)
+    phone = Column(EncryptedText, nullable=False)          # 🔒 encrypted at rest
+    email = Column(EncryptedText, nullable=True)           # 🔒 encrypted at rest
     notification_mode = Column(String(20), default="ask")  # 'never', 'ask', 'automatic'
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(
@@ -242,8 +243,8 @@ class ConnectedIntegration(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     provider = Column(String(50), nullable=False)  # e.g. 'google'
-    access_token = Column(Text, nullable=True)  # OAuth 2.0 Access Token
-    refresh_token = Column(Text, nullable=True)  # OAuth 2.0 Refresh Token
+    access_token = Column(EncryptedText, nullable=True)    # 🔒 encrypted at rest
+    refresh_token = Column(EncryptedText, nullable=True)   # 🔒 encrypted at rest
     photos_enabled = Column(Boolean, default=False)
     contacts_enabled = Column(Boolean, default=False)
     scopes = Column(Text, nullable=True)  # granted scopes string
@@ -313,6 +314,7 @@ class WellnessProfile(Base):
     interests = Column(JSON, default=list)
     available_time_description = Column(String(200), nullable=True)
     city = Column(String(100), nullable=True)
+    music_preference = Column(String(100), default="bollywood", nullable=False)
 
 
 class WellnessCheckin(Base):
@@ -402,3 +404,14 @@ class DismissedRecommendation(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     activity_key = Column(String(50), nullable=False)
     dismissed_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+
+class TokenBlocklist(Base):
+    """JWT tokens that have been explicitly revoked (logout / account deletion)."""
+
+    __tablename__ = "token_blocklist"
+    jti = Column(String(36), primary_key=True)        # JWT ID (uuid4)
+    user_id = Column(Integer, nullable=False, index=True)
+    revoked_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    expires_at = Column(DateTime, nullable=False)     # so we can prune old entries
+

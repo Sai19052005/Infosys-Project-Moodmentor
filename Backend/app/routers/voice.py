@@ -31,8 +31,26 @@ def generate_tts(payload: TTSRequest, current_user: User = Depends(get_current_u
         
     return FileResponse(audio_path, media_type="audio/mpeg")
 
+@router.get("/meditation/{program_id}")
 @router.get("/meditation/{program_id}/{language}")
-def get_meditation_audio(program_id: str, language: str, current_user: User = Depends(get_current_user)):
-    # Simple placeholder logic: in a real implementation this would fetch/generate the full program
-    # For now, we return 404 or a predefined mock file
-    raise HTTPException(status_code=404, detail="Meditation audio generation not fully implemented")
+def get_meditation_audio(program_id: str, language: str = "en"):
+    from app.services.tts_service import AUDIO_CACHE_DIR
+    p = program_id.lower().replace("-", "_")
+    if "ravi" in p or "shankar" in p or p == "meditation_ravi_shankar_10":
+        audio_file = AUDIO_CACHE_DIR / "ravi_shankar_10min.mp3"
+        if audio_file.exists():
+            return FileResponse(
+                audio_file,
+                media_type="audio/mpeg",
+                filename="Sri_Sri_Ravi_Shankar_10Min_Meditation.mp3",
+            )
+    if "choa" in p or "sui" in p or "twin" in p or p == "meditation_choa_kok_sui_27":
+        audio_file = AUDIO_CACHE_DIR / "choa_kok_sui_27min.mp3"
+        if audio_file.exists():
+            return FileResponse(
+                audio_file,
+                media_type="audio/mpeg",
+                filename="Master_Choa_Kok_Sui_Twin_Hearts_27Min.mp3",
+            )
+    raise HTTPException(status_code=404, detail="Meditation audio not found")
+
